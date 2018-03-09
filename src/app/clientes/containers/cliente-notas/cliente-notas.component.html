@@ -1,0 +1,25 @@
+<mat-card>
+  <sx-search-title title="Notas ({{tipo}})"></sx-search-title>
+  <mat-divider></mat-divider>
+  <td-data-table #dataTable [data]="notas$ | async" [columns]="columns" [sortable]="true" [style.height.px]="420">
+    <ng-template tdDataTableTemplate="folio" let-value="value" let-row="row">
+      <a color="accent" flex (click)="onSelect(row)" class="cursor-pointer">
+        <span>{{row?.folio}}</span>
+      </a>
+    </ng-template>
+    <ng-template tdDataTableTemplate="nota" let-value="value" let-row="row">
+      <div layout layout-align="center" class="pad-left" *ngIf="value">
+        <a mat-button color="accent" flex (click)="onSelect(row)">
+          <span>{{value?.serie}}</span>
+          <span>{{value?.folio}}</span>
+          <mat-icon color="accent" *ngIf="value.cfdi">notifications</mat-icon>
+          <mat-icon color="warning" *ngIf="!value.cfdi" matTooltip="Pendiente de timbrado">notifications_off</mat-icon>
+        </a>
+      </div>
+    </ng-template>
+    <ng-template tdDataTableTemplate="timbrado" let-value="value" let-row="row">
+      <mat-icon class="tc-green-800" *ngIf="row.cfdi" matTooltip="{{row.cfdi?.uuid}}">check</mat-icon>
+    </ng-template>
+  </td-data-table>
+
+</mat-card>

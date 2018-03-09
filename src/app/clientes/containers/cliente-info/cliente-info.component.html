@@ -1,0 +1,4 @@
+<div layout layout-align="start start" *ngIf="cliente$ | async as cliente">
+  <sx-cliente-info-card [cliente]="cliente" (editar)="onEditCliente($event)" flex></sx-cliente-info-card>
+  <sx-cliente-credito-card [cliente]="cliente" (edit)="onEditCredito($event)"></sx-cliente-credito-card>
+</div>

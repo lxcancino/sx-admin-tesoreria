@@ -1,0 +1,97 @@
+<mat-card>
+  <td-expansion-panel>
+    <ng-template td-expansion-panel-header>
+      <mat-toolbar>
+        <button mat-icon-button>
+          <mat-icon [routerLink]="['/clientes', cobro.cliente.id]">person</mat-icon>
+        </button>
+        <span class="pad-left pad-right">{{cobro.cliente.nombre}}</span>
+
+        <span class="fill-space"></span>
+        <span>
+          <span class="pad-right">Disponible: </span>
+          <span class="tc-indigo-600">{{cobro.disponible | currency: 'USD':1.2-2}}</span>
+        </span>
+      </mat-toolbar>
+    </ng-template>
+    <td-expansion-summary>
+      <div layout layout-padding>
+        <span flex>
+          <span>Importe: </span>
+          <span class="pad-left tc-indigo-800">{{cobro.importe | currency: 'USD':1.2-2}}</span>
+        </span>
+        <span flex>
+          <span>Aplicado: </span>
+          <span class="pad-left tc-indigo-800">{{cobro.aplicado | currency: 'USD':1.2-2 }}</span>
+        </span>
+        <span flex>
+          <span>Disponible: </span>
+          <span class="pad-left tc-indigo-800">{{cobro.disponible | currency: 'USD':1.2-2}}</span>
+        </span>
+        <span flex>
+          <span>Por aplicar: </span>
+          <span class="pad-left tc-indigo-800">{{porAplicar | currency: 'USD':1.2-2}}</span>
+        </span>
+        <span *tdLoading="'saving'; mode:'indeterminate'; type:'circle'; strategy:'overlay'; ">
+          <button mat-raised-button (click)="aplicar()" color="primary" *ngIf="cobro.disponible > 0" [disabled]="porAplicar <= 0.0">Aplicar
+            <mat-icon>check</mat-icon>
+          </button>
+        </span>
+      </div>
+    </td-expansion-summary>
+    <div layout layout-padding>
+      <span flex>
+        <span>Fecha: </span>
+        <span class=""> {{cobro.fecha | date: 'dd/MM/yyyy'}}</span>
+      </span>
+      <span flex>
+        <span class=""> {{cobro.formaDePago}}</span>
+      </span>
+      <span flex>
+        <span>Ref: </span>
+        <span class=""> {{cobro.referencia}}</span>
+      </span>
+      <span flex>
+        <span>Cartera: </span>
+        <span class=""> {{cobro.tipo}}</span>
+      </span>
+      <span flex>
+        <span>Sucursal: </span>
+        <span class=""> {{cobro.sucursal.nombre}}</span>
+      </span>
+    </div>
+    <mat-divider></mat-divider>
+    <div layout layout-padding>
+      <span flex>
+        <span>Importe: </span>
+        <span class="pad-left tc-indigo-800">{{cobro.importe | currency: 'USD':1.2-2}}</span>
+      </span>
+      <span flex>
+        <span>Aplicado: </span>
+        <span class="pad-left tc-indigo-800">{{cobro.aplicado | currency: 'USD':1.2-2 }}</span>
+      </span>
+      <span flex>
+        <span>Disponible: </span>
+        <span class="pad-left tc-indigo-800">{{cobro.disponible | currency: 'USD':1.2-2}}</span>
+      </span>
+      <span flex>
+        <span>Por aplicar: </span>
+        <span class="pad-left tc-indigo-800">{{porAplicar | currency: 'USD':1.2-2}}</span>
+      </span>
+      <span>
+        <button mat-raised-button (click)="aplicar()" color="primary" *ngIf="cobro.disponible > 0" [disabled]="porAplicar <= 0.0">Aplicar
+          <mat-icon>check</mat-icon>
+        </button>
+      </span>
+    </div>
+  </td-expansion-panel>
+  <td-expansion-panel label="Facturas" sublabel="Cuentas por cobrar" [disabled]="false" [expand]="true">
+    <ng-container *ngIf="pendientes$ | async as pendientes">
+      <sx-facturas-table [data]="pendientes" (selection)="onSelection($event)" (reload)="reload()">
+      </sx-facturas-table>
+    </ng-container>
+  </td-expansion-panel>
+  <td-expansion-panel label="Aplicaciones" sublabel="Cobros aplicados" [disabled]="false">
+    <sx-aplicaciones-table [data]="cobro.aplicaciones"></sx-aplicaciones-table>
+  </td-expansion-panel>
+</mat-card>

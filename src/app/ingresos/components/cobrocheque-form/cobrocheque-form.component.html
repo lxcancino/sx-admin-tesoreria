@@ -1,0 +1,20 @@
+<form novalidate (ngSubmit)="onSubmit()" [formGroup]="form">
+  <h3 mat-dialog-title>Datos del cheque</h3>
+
+  <mat-dialog-content layout="column">
+    <sx-banco-field formControlName="bancoOrigen"></sx-banco-field>
+    <div layout>
+      <mat-form-field flex class="pad-right">
+        <input matInput placeholder="Número de cheque" formControlName="numero" type="number">
+      </mat-form-field>
+      <mat-form-field flex>
+        <input matInput placeholder="Cuenta " formControlName="numeroDeCuenta">
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button type="button" mat-button (click)="closeDialog()">Cancelar</button>
+    <button type="submit" mat-button [disabled]="form.invalid">Salvar</button>
+  </mat-dialog-actions>
+</form>

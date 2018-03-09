@@ -1,0 +1,52 @@
+<form novalidate [formGroup]="form">
+  <h2 mat-dialog-title>{{cliente.nombre}}</h2>
+  <mat-dialog-content>
+    <div layout class="pad">
+      <mat-checkbox formControlName="creditoActivo" flex>Activo</mat-checkbox>
+      <mat-checkbox formControlName="postFechado" flex>Cheque post fechado</mat-checkbox>
+    </div>
+    <div layout>
+      <mat-form-field flex>
+        <input matInput placeholder="Límite de crédito" formControlName="lineaDeCredito" type="number">
+      </mat-form-field>
+      <mat-form-field flex class=" pad-left">
+        <input matInput placeholder="Plazo" formControlName="plazo" type="number">
+      </mat-form-field>
+    </div>
+    <div layout>
+      <mat-form-field flex>
+        <input matInput placeholder="Atraso máximo" formControlName="atrasoMaximo" type="number">
+      </mat-form-field>
+      <mat-form-field flex class="pad-left">
+        <input matInput placeholder="Descuento fijo" formControlName="descuentoFijo" type="number">
+      </mat-form-field>
+    </div>
+
+    <div layout class="pad">
+      <mat-checkbox formControlName="revision" flex>Revisión</mat-checkbox>
+      <mat-checkbox formControlName="venceFactura" flex>Vencimiento factura</mat-checkbox>
+    </div>
+    <div layout>
+      <mat-form-field flex>
+        <mat-select placeholder="Día revisión" formControlName="diaRevision">
+          <mat-option *ngFor="let dia of [1,2,3,4,5]" [value]="dia">
+            {{getDiaName(dia)}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field flex class="pad-left">
+        <mat-select placeholder="Día cobro" formControlName="diaCobro">
+          <mat-option *ngFor="let dia of [1,2,3,4,5]" [value]="dia">
+            {{getDiaName(dia)}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close type="button">Cancelar</button>
+    <button mat-button [mat-dialog-close]="form.value" tabindex="-1" [disabled]="form.invalid || form.pristine">Aceptar
+    </button>
+  </mat-dialog-actions>
+</form>

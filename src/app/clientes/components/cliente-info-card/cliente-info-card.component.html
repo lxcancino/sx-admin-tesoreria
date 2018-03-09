@@ -1,0 +1,52 @@
+<mat-card flex-gt-sm>
+  <ng-container>
+    <mat-card-title class="tc-pink-800" *ngIf="!cliente.activo">Clinte SUSPENDIDO</mat-card-title>
+    <mat-divider></mat-divider>
+  </ng-container>
+
+  <mat-list flex>
+    <h3 matSubheader>Datos generales</h3>
+    <mat-list-item>
+      <mat-icon matListAvatar>account_box</mat-icon>
+      <h4 matLine>{{cliente.nombre}}</h4>
+      <p matLine> RFC: {{cliente.rfc}}</p>
+      <mat-divider matInset></mat-divider>
+    </mat-list-item>
+
+    <mat-list-item *ngIf="cliente.direccion as direccion">
+      <mat-icon matListAvatar>location_on</mat-icon>
+      <h4 matLine>Calle: {{direccion.calle}} #Int:{{direccion.numeroInterior}} #Ext: {{direccion.numeroExterior}}</h4>
+      <h4 matLine>Col: {{direccion.colonia}} Mpo: {{direccion.municipio}}</h4>
+      <h4 matLine>Estado: {{direccion.estado}} C.P.:{{direccion.codigoPostal}}</h4>
+      <mat-divider matInset></mat-divider>
+    </mat-list-item>
+
+    <mat-list-item>
+      <mat-icon matListAvatar>local_phone</mat-icon>
+      <h4 matLine>{{cliente.telefonos.join(' / ')}}</h4>
+      <p matLine>Telefonos</p>
+      <mat-divider matInset></mat-divider>
+    </mat-list-item>
+
+    <mat-list-item>
+      <mat-icon matListAvatar>email</mat-icon>
+      <h4 matLine>{{cliente.cfdiMail}}</h4>
+      <p matLine>Cfdi Email</p>
+    </mat-list-item>
+
+    <mat-list-item>
+      <mat-icon matListAvatar>account_balance_wallet</mat-icon>
+      <h4 matLine> Permite cheque: {{cliente.permiteCheque ? 'SI' : 'NO'}}</h4>
+      <p matLine>
+        <span>Cheques devueltos: {{cliente.chequeDevuelto}}</span>
+      </p>
+    </mat-list-item>
+
+
+  </mat-list>
+
+  <mat-divider></mat-divider>
+  <mat-card-actions>
+    <button mat-button color="accent" class="text-upper" (click)="editar.emit(cliente)">Editar</button>
+  </mat-card-actions>
+</mat-card>

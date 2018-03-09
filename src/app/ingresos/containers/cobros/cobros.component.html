@@ -1,0 +1,26 @@
+<mat-card [style.height.vh]="82" flex>
+  <sx-search-title title="Cobros registrados" (search)=onSearch($event)>
+    <ng-container class="options">
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Fecha" [(ngModel)]="fecha">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </ng-container>
+
+    <button mat-menu-item class="actions">
+      <mat-icon>refresh</mat-icon> Refrescar
+    </button>
+    <button mat-menu-item class="actions" (click)="insert()">
+      <mat-icon>add</mat-icon> Agregar
+    </button>
+  </sx-search-title>
+  <div>
+    <ng-template tdLoading [tdLoadingUntil]="!procesando" tdLoadingStrategy="overlay">
+      <sx-cobros-table [cobros]="cobros$ | async" (select)="onSelect($event)"></sx-cobros-table>
+    </ng-template>
+  </div>
+</mat-card>
+<a mat-fab color="accent" class="mat-fab-bottom-right" [routerLink]="['create']">
+  <mat-icon>add</mat-icon>
+</a>

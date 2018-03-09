@@ -1,0 +1,96 @@
+<div layout="row" layout-align="start center" class="pad-sm" >
+  <span  class="push-left-sm">
+    <span class="mat-title">Alta de nota de credito por bonificación</span>
+  </span>
+  <span flex></span>
+  <span >({{form.get('fecha').value | date:'dd/MM/yyyy'}})</span>
+  <span class="pad-left tc-indigo-800" >Cartera: {{cartera}}</span>
+</div>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate  class="pad-left pad-right">
+  <div layout >
+    <sx-cliente-field formControlName="cliente" flex="65"></sx-cliente-field>
+    <mat-form-field class="pad-right pad-left">
+      <mat-select placeholder="Moneda" formControlName="moneda">
+        <mat-option></mat-option>
+        <mat-option *ngFor="let moneda of ['MXN','USD']"  [value]="moneda">
+          {{ moneda }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field >
+      <input matInput placeholder="T.C" formControlName="tipoDeCambio">
+    </mat-form-field>
+  </div>
+  <div layout >
+    <mat-form-field class="pad-right " flex>
+      <mat-select placeholder="Cálculo" formControlName="tipoDeCalculo">
+        <mat-option *ngFor="let c of ['PORCENTAJE','PRORRATEO']" 
+          [value]="c">
+          {{ c }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="pad-right" >
+      <mat-select placeholder="Base de cálculo" formControlName="baseDelCalculo">
+        <mat-option *ngFor="let base of ['Saldo','Total']" 
+          [value]="base">
+          {{ base}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="pad-left slim" >
+      <input matInput placeholder="Descuento" formControlName="descuento" >
+      <mat-error> Descuento incorrecto</mat-error>
+      <span matSuffix>%</span>
+    </mat-form-field>
+    <mat-form-field class="pad-left slim" >
+      <input matInput placeholder="Descuento2" formControlName="descuento2" >
+      <mat-error> Descuento incorrecto</mat-error>
+      <span matSuffix>%</span>
+    </mat-form-field>
+    <mat-form-field class="pad-left slim" >
+      <input matInput placeholder="Desc Neto" value="{{descuentoNeto}}" [disabled]="true">
+      <span matSuffix>%</span>
+    </mat-form-field>
+    <mat-form-field class="pad-left" >
+      <input matInput placeholder="Importe" formControlName="importe"
+        currencyMask  >
+      <mat-error>Importe invalido</mat-error>
+    </mat-form-field>
+    
+  </div>
+  <div layout>
+    <mat-form-field flex>
+      <!-- <input matInput placeholder="Comentario" formControlName="comentario" sxToUpperCase> -->
+      <textarea matInput placeholder="Comentario" formControlName="comentario" 
+        matTextareaAutosize matAutosizeMinRows="1" sxToUpperCase
+        matAutosizeMaxRows="3">
+      </textarea>
+    </mat-form-field>
+    <mat-form-field class="pad-left">
+      <input type="text" placeholder="Saldo facturas" matInput value="{{saldoFacturas | currency: 'USD': 1.2-2}}" [disabled]="true">
+    </mat-form-field>
+    <mat-form-field class="pad-left">
+      <input type="text" placeholder="Total facturas" matInput value="{{totalFacturas | currency: 'USD': 1.2-2}}" [disabled]="true">
+    </mat-form-field>
+    <sx-facturas-selector-btn  #insertBtn [disabled]="form.get('cliente').value === null"
+      [cliente]="form.get('cliente').value"
+      (seleccionar)="agregarFacturas($event)">
+    </sx-facturas-selector-btn>
+  </div>
+  <sx-bonificacion-partidas 
+    [parent]="form" [partidas]="partidas.value" (delete)="onDeletePartida($event)">
+  </sx-bonificacion-partidas>
+
+  <mat-card-actions>
+    <button mat-button type="submit" color="primary" 
+      [disabled]="form.invalid || form.pristine">
+      <mat-icon>save</mat-icon> SALVAR
+    </button>
+    <button mat-button type="button" (click)="cancelar.emit()">
+      <mat-icon>back</mat-icon> CANCELAR
+    </button>
+  </mat-card-actions>
+</form>
+  
+

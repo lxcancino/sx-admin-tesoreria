@@ -1,0 +1,44 @@
+<div [formGroup]="parent" class="partidas-grid-container">
+  <div formArrayName="partidas">
+    <div *ngIf="invalid" class="text-center">
+      <h3 class="tc-pink-700">Debe registrar al menos una partida</h3>
+    </div>
+
+    <table td-data-table class="table" #dataTable>
+      <thead>
+        <tr td-data-table-column-row>
+          <th td-data-table-column>Rng</th>
+          <th td-data-table-column >Sucursal</th>
+          <th td-data-table-column >Tipo</th>
+          <th td-data-table-column >Factura</th>
+          <th td-data-table-column >Fecha</th>
+          <th td-data-table-column >Total</th>
+          <th td-data-table-column >Pagos</th>
+          <th td-data-table-column >Saldo</th>
+          <th td-data-table-column ><mat-icon>more_vert</mat-icon></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr td-data-table-row *ngFor="let row of partidas; index as i" [formGroupName]="i">
+          <td td-data-table-cell>{{i + 1}}</td>
+          <td td-data-table-cell>{{row.cuentaPorCobrar.sucursal}}</td>
+          <td td-data-table-cell>{{row.cuentaPorCobrar.tipo}}</td>
+          <td td-data-table-cell>{{row.cuentaPorCobrar.documento}}</td>
+          <td td-data-table-cell>{{row.cuentaPorCobrar.fecha | date: 'dd/MM/yyyy'}}</td>
+          <td td-data-table-cell>{{row.cuentaPorCobrar.total | currency: 'USD': 1.2-2}}</td>
+          <td td-data-table-cell>{{row.cuentaPorCobrar.pagos | currency: 'USD': 1.2-2}}</td>
+          <td td-data-table-cell>{{row.cuentaPorCobrar.saldo | currency: 'USD': 1.2-2}}</td>
+          <td td-data-table-cell>
+            <button mat-icon-button type="button" (click)="delete.emit(i)" >
+              <mat-icon mat-icon-button color="accent" >delete</mat-icon>
+            </button>
+          </td>
+          
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+

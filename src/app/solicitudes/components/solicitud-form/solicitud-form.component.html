@@ -1,0 +1,54 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+  <div layout>
+    <span mat-dialog-title flex>Solicitud de deposito</span>
+    <mat-form-field>
+      <mat-select placeholder="Tipo" formControlName="tipo">
+        <mat-option *ngFor="let tipo of ['CRE','JUR','CHE']" [value]="tipo">
+          {{tipo}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <mat-dialog-content>
+
+    <div layout>
+      <sx-cliente-field formControlName="cliente" flex></sx-cliente-field>
+    </div>
+    <div layout>
+      <sx-banco-field formControlName="banco"></sx-banco-field>
+      <sx-cuenta-banco-field formControlName="cuenta" flex class="pad-left"></sx-cuenta-banco-field>
+    </div>
+    <div layout>
+      <mat-form-field flex>
+        <input type="number" placeholder="Cheque" formControlName="cheque" matInput>
+      </mat-form-field>
+      <mat-form-field flex class="pad-left pad-right  ">
+        <input type="number" placeholder="Efectivo" formControlName="efectivo" matInput>
+      </mat-form-field>
+      <mat-form-field flex>
+        <input type="number" placeholder="Transferencia" formControlName="transferencia" matInput>
+      </mat-form-field>
+    </div>
+    <div layout>
+      <mat-form-field flex>
+        <input matInput placeholder="Referencia" formControlName="referencia">
+      </mat-form-field>
+      <mat-form-field flex class="pad-left">
+        <input matInput [matDatepicker]="picker" placeholder="Fecha deposito" formControlName="fechaDeposito">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div layout>
+      <mat-form-field flex>
+        <input matInput placeholder="Comentario" formControlName="comentario">
+      </mat-form-field>
+    </div>
+
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button mat-button type="submit" [disabled]="form.invalid || form.pristine">Aceptar</button>
+  </mat-dialog-actions>
+</form>

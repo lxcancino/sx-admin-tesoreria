@@ -1,0 +1,25 @@
+<mat-card>
+  <div layout class="pad-left pad-right pad-top">
+    <span class="mat-title">Fichas de depósito</span>
+    <span flex></span>
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker" placeholder="Fecha" [(ngModel)]="fechaInicial">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <span>
+      <button mat-icon-button [matMenuTriggerFor]="toolbarMenu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #toolbarMenu="matMenu">
+        <button mat-menu-item (click)="load()">
+          <mat-icon>refresh</mat-icon> Refrescar</button>
+        <button mat-menu-item (click)="generar(fechaInicial)">
+          <mat-icon>build</mat-icon> Generar</button>
+      </mat-menu>
+
+    </span>
+  </div>
+  <sx-fichas-table [fichas]="fichas$ | async" (select)="onSelect($event)" (ingreso)="registrarIngreso($event)"></sx-fichas-table>
+</mat-card>

@@ -1,0 +1,21 @@
+<mat-table class="clientes-table mat-elevation-z8" [dataSource]="dataSource" matSort
+            matSortActive="nombre" matSortDirection="desc" matSortDisableClear>
+
+  <ng-container matColumnDef="nombre">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</mat-header-cell>
+    <mat-cell class="cursor-pointer" *matCellDef="let cliente">{{cliente.nombre}}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="rfc">
+    <mat-header-cell *matHeaderCellDef>RFC</mat-header-cell>
+    <mat-cell *matCellDef="let cliente">{{cliente.rfc}}</mat-cell>
+  </ng-container>
+  <ng-container matColumnDef="clave">
+    <mat-header-cell *matHeaderCellDef>Clave</mat-header-cell>
+    <mat-cell *matCellDef="let cliente">{{cliente.clave}}</mat-cell>
+  </ng-container>
+
+  <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: columns" (click)="select.emit(row)"
+            [ngClass]="{'selected': row.id === selected?.id }">
+  </mat-row>
+</mat-table>

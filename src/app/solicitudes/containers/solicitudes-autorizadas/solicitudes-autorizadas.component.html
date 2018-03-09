@@ -1,0 +1,14 @@
+<mat-card>
+  <sx-search-title title="Depositos autorizados" (search)="onSearch($event)">
+
+    <span class="pad-left info">
+      <a mat-button (click)="cambiarPeriodo()"> {{periodo}} </a>
+    </span>
+    <button mat-menu-item class="actions" (click)="load()">
+      <mat-icon>refresh</mat-icon> Refrescar</button>
+  </sx-search-title>
+  <mat-divider></mat-divider>
+  <div *tdLoading="'loading'; mode:'indeterminate'; type:'circle'; strategy:'overlay'; color:'accent'">
+    <sx-solicitudes-table [solicitudes]="solicitudes$ | async"></sx-solicitudes-table>
+  </div>
+</mat-card>

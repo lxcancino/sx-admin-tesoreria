@@ -1,0 +1,11 @@
+<td-data-table [columns]="columns" [data]="solicitudes" [style.height.px]="500">
+  <ng-template tdDataTableTemplate="folio" let-value="value" let-row="row">
+    <span (click)="select.emit(row)" class="cursor-pointer">{{value}}</span>
+  </ng-template>
+  <ng-template tdDataTableTemplate="comentario" let-value="value" let-row="row">
+    <span *ngIf="row.cobro" class="tc-indigo-800">
+      AUTORIZADO Disponible: {{row.cobro.disponible | currency }}
+    </span>
+    <span *ngIf="row.cobro === null">{{value}}</span>
+  </ng-template>
+</td-data-table>

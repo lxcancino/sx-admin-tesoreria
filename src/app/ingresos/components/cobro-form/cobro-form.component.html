@@ -1,0 +1,84 @@
+<mat-card>
+  <mat-card-title-group layout>
+    <mat-card-title>Registro de cobro
+      <span class="pad-right pad-left" *ngIf="cobro" class="tc-indigo-800">
+      </span>
+      <span class="pad-right" *ngIf="cobro">({{cobro.fecha | date: 'dd/MM/yyyy'}})</span>
+    </mat-card-title>
+    <span flex></span>
+  </mat-card-title-group>
+  <mat-divider></mat-divider>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+    <div layout="column" class="pad-left pad-right">
+      <div layout flex>
+        <sx-cliente-field formControlName="cliente" flex></sx-cliente-field>
+        <mat-form-field class="pad-left">
+          <mat-select placeholder="Cartera" formControlName="tipo">
+            <mat-option *ngFor="let tipo of ['CRE','JUR','CHE']" [value]="tipo">
+              {{tipo}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+
+      <div layout flex>
+        <mat-form-field flex>
+          <input matInput [matDatepicker]="datePicker" placeholder="Fecha" formControlName="fecha">
+          <mat-datepicker #datePicker></mat-datepicker>
+          <mat-datepicker-toggle [for]="datePicker" matSuffix></mat-datepicker-toggle>
+        </mat-form-field>
+
+        <mat-form-field flex class="pad-left pad-right">
+          <mat-select placeholder="Fomra de pago" formControlName="formaDePago" class="fill">
+            <mat-option *ngFor="let tipo of ['EFECTIVO', 'CHEQUE', 'TRANSFERENCIA', 'TARJETA_DEBITO', 'TARJETA_CREDITO']" [value]="tipo">
+              {{tipo}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field flex [style.width.px]="200">
+          <input type="number" formControlName="importe" sxOnlyNumbers placeholder="Importe" matInput>
+        </mat-form-field>
+      </div>
+
+      <div layout *ngIf="cobro?.cheque as cheque">
+        <mat-form-field flex class="pad-right">
+          <input matInput placeholder="Banco Origen" [value]="cobro.bancoOrigen" [disabled]="true">
+        </mat-form-field>
+        <mat-form-field flex class="pad-right">
+          <input matInput placeholder="Número de cheque" [value]="cheque.numero" [disabled]="true">
+        </mat-form-field>
+        <mat-form-field flex>
+          <input matInput placeholder="Cuenta " [value]="cheque.numeroDeCuenta" [disabled]="true">
+        </mat-form-field>
+
+      </div>
+
+      <div layout>
+        <mat-form-field flex>
+          <textarea matInput placeholder="Comentario" formControlName="comentario" matTextareaAutosize matAutosizeMinRows="1">
+          </textarea>
+        </mat-form-field>
+        <mat-form-field *ngIf="cobro" class="pad-left">
+          <input matInput placeholder="Aplicado" [value]="cobro.aplicado | currency: 'USD':1.2-2" [disabled]="true">
+        </mat-form-field>
+        <mat-form-field *ngIf="cobro" class="pad-left">
+          <input matInput placeholder="Disponible" [value]="cobro.disponible | currency: 'USD':1.2-2" [disabled]="true">
+        </mat-form-field>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+
+    <mat-card-actions>
+      <button mat-button color="primary" *ngIf="isEditable()" [disabled]="form.invalid || form.pristine">Salvar
+      </button>
+      <button type="button" mat-button (click)="cancel.emit('cancel')"> Cancelar</button>
+      <button type="button" mat-button (click)="delete.emit(cobro)" *ngIf="cobro && isEditable()" color="warn">
+        <mat-icon>delete</mat-icon>Eliminar
+      </button>
+    </mat-card-actions>
+  </form>
+
+</mat-card>

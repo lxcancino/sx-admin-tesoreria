@@ -1,0 +1,64 @@
+<mat-card>
+  <mat-card-title-group layout>
+    <mat-card-title>Nota de cargo
+      <span class="pad-right pad-left" *ngIf="nota" class="tc-indigo-800">
+        {{cartera}} - {{nota.folio}}
+      </span>
+      <span class="pad-right" *ngIf="nota">({{nota.fecha | date: 'dd/MM/yyyy'}})</span>
+    </mat-card-title>
+    <span flex></span>
+
+
+  </mat-card-title-group>
+  <mat-divider></mat-divider>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+
+    <div layout="column" class="pad-left pad-right">
+      <sx-cliente-field formControlName="cliente" flex></sx-cliente-field>
+      <div layout>
+        <mat-form-field class="pad-right">
+          <mat-select placeholder="Cálculo" formControlName="tipoDeCalculo">
+            <mat-option *ngFor="let c of ['PORCENTAJE','PRORRATEO']" [value]="c">
+              {{ c }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="pad-right" [style.width.px]="100">
+          <input type="text" formControlName="cargo" sxOnlyNumbers placeholder="Cargo" matInput>
+          <span matSuffix>%</span>
+        </mat-form-field>
+        <mat-form-field class="pad-right" [style.width.px]="150">
+          <input type="text" formControlName="total" sxOnlyNumbers placeholder="Total" matInput>
+        </mat-form-field>
+        <sx-forma-de-pago [parent]="form"></sx-forma-de-pago>
+        <sx-uso-cfdi [parent]="form" flex class="pad-sm-left"></sx-uso-cfdi>
+      </div>
+      <div layout>
+        <mat-form-field flex>
+          <textarea matInput placeholder="Comentario" formControlName="comentario" matTextareaAutosize matAutosizeMinRows="1">
+          </textarea>
+        </mat-form-field>
+        <sx-facturas-selector-btn #insertBtn [disabled]="form.get('cliente').value === null" [cliente]="form.get('cliente').value"
+          (seleccionar)="agregarFacturas($event)">
+        </sx-facturas-selector-btn>
+      </div>
+    </div>
+    <mat-divider></mat-divider>
+    <sx-notadecargo-partidas [parent]="form" [partidas]="partidas.value" (delete)="onDeletePartida($event)">
+    </sx-notadecargo-partidas>
+
+    <mat-card-actions>
+      <button type="button" mat-button (click)="cancel.emit('cancel')"> Cancelar</button>
+      <button mat-button color="primary" *ngIf="isEditable()" [disabled]="form.invalid || form.pristine">Salvar
+      </button>
+
+      <button mat-button type="button" *ngIf="nota?.id && !nota?.cfdi" (click)="timbrar.emit(nota)" color="accent">
+        Timbrar
+        <mat-icon>notifications_active</mat-icon>
+      </button>
+
+    </mat-card-actions>
+  </form>
+
+</mat-card>

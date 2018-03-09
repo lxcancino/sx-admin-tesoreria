@@ -1,0 +1,32 @@
+<div layout="row" layout-align="start center" class="pad-left-sm pad-right-sm">
+
+  <span *ngIf="!searchBox.searchVisible" class="push-left-sm">
+    <span *ngIf="selectedRows.length && selectable" class="mat-body-1">
+      {{selectedRows.length}} registro(s) seleccionados
+    </span>
+  </span>
+  <td-search-box #searchBox backIcon="arrow_back" class="push-right-sm" placeholder="Search here" (searchDebounce)="search($event)"
+    flex>
+  </td-search-box>
+  <button mat-icon-button (click)="reload.emit($event)">
+    <mat-icon>refresh</mat-icon>
+  </button>
+</div>
+<mat-divider></mat-divider>
+<td-data-table #dataTable [data]="filteredData" [columns]="columns" [selectable]="selectable" [clickable]="true" [multiple]="true"
+  [sortable]="true" [sortBy]="sortBy" [(ngModel)]="selectedRows" [sortOrder]="sortOrder" (sortChange)="sort($event)" (rowSelect)="selectionChange()"
+  (selectAll)="selectionChange()">
+</td-data-table>
+<div class="md-padding" *ngIf="!dataTable.hasData" layout="row" layout-align="center center">
+  <h3>No hay cuentas por cobrar.</h3>
+</div>
+<td-paging-bar #pagingBar [pageSize]="pageSize" [total]="filteredTotal" (change)="page($event)">
+  <span hide-xs>Registros por pagina:</span>
+  <mat-select [style.width.px]="10" [(ngModel)]="pageSize">
+    <mat-option *ngFor="let size of [10,50,100,500]" [value]="size">
+      {{size}}
+    </mat-option>
+  </mat-select>
+  {{pagingBar.range}}
+  <span hide-xs>of {{pagingBar.total}}</span>
+</td-paging-bar>
