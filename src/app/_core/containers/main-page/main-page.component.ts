@@ -27,6 +27,11 @@ export class MainPageComponent implements OnInit {
       icon: 'file_download',
       route: '/ingresos',
       title: 'Ingresos'
+    },
+    {
+      icon: 'credit_card',
+      route: '/cortesTarjeta',
+      title: 'Cortes de tarjeta'
     }
 
     // {

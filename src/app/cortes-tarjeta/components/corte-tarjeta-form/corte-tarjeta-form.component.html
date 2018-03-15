@@ -1,0 +1,35 @@
+<mat-card flex>
+
+  <mat-card-title-group layout>
+    <mat-card-title>
+      Corte: {{corte.folio}} {{corte.tipo}} ({{corte.corte | date:'dd/MM/yyyy'}})
+    </mat-card-title>
+    <mat-card-subtitle>
+      <span layout>
+        <span flex>{{corte.sucursal.nombre}}</span>
+        <span flex>({{corte.estatus}})</span>
+        <span></span>
+        <span flex>{{corte.cuentaDeBanco.descripcion}}</span>
+      </span>
+
+    </mat-card-subtitle>
+
+  </mat-card-title-group>
+
+  <mat-divider></mat-divider>
+  <div layout layout-margin>
+    <td-data-table [columns]="columns" [data]="corte.aplicaciones">
+      <ng-template tdDataTableTemplate="importe" let-value="value" let-row="row">
+        {{value | currency: 'USD': 1.2-2}}
+      </ng-template>
+    </td-data-table>
+  </div>
+  <mat-card-actions>
+    <button mat-raised-button (click)="cancelar.emit($event)"> Regresar</button>
+    <ng-container *ngIf="corte.estatus === 'PENDIENTE'">
+      <button mat-raised-button matTooltip="Madar a tesorería" (click)="aplicar.emit(corte)"> Aplicar</button>
+      <button mat-raised-button color="warn" (click)="eliminar.emit(corte)">
+        <mat-icon>delete</mat-icon>Eliminar</button>
+    </ng-container>
+  </mat-card-actions>
+</mat-card>
