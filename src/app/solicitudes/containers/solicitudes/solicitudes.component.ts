@@ -8,18 +8,37 @@ import { TdMediaService } from '@covalent/core';
 export class SolicitudesComponent implements OnInit {
   navmenu: Object[] = [
     {
-      icon: 'looks_one',
       route: 'pendientes',
       title: 'Pendientes',
-      description: 'Solicitudes por autorizar'
+      description: 'Depósitos por autorizar',
+      icon: 'repeat'
     },
     {
-      icon: 'looks_two',
-      route: 'autorizadas',
-      title: 'Autorizadas',
-      description: 'Solicitudes autorizadas'
+      route: 'autorizados',
+      title: 'Autorizados',
+      description: 'Depositos autorizados',
+      icon: 'check'
+    },
+    {
+      route: 'transito',
+      title: 'Transito',
+      description: 'Depositos en transito',
+      icon: 'swap_horiz'
+    },
+    {
+      route: 'canceladas',
+      title: 'Canceladas',
+      descripcion: 'Solicitudes canceladas',
+      icon: 'cancel'
+    },
+    {
+      route: 'cobros',
+      title: 'Cobros',
+      description: 'Registro de cobros',
+      icon: 'file_download'
     }
   ];
+
   constructor(public media: TdMediaService) {}
 
   ngOnInit() {}

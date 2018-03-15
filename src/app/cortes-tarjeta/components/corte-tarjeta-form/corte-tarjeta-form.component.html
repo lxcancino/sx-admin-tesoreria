@@ -25,11 +25,18 @@
     </td-data-table>
   </div>
   <mat-card-actions>
-    <button mat-raised-button (click)="cancelar.emit($event)"> Regresar</button>
+    <button mat-raised-button (click)="cancelar.emit($event)">
+      <mat-icon>arrow_back</mat-icon>Regresar
+    </button>
     <ng-container *ngIf="corte.estatus === 'PENDIENTE'">
-      <button mat-raised-button matTooltip="Madar a tesorería" (click)="aplicar.emit(corte)"> Aplicar</button>
+      <button mat-raised-button matTooltip="Madar a tesorería" (click)="aplicar.emit(corte)" color="accent">
+        <mat-icon>check</mat-icon>Aplicar
+      </button>
       <button mat-raised-button color="warn" (click)="eliminar.emit(corte)">
         <mat-icon>delete</mat-icon>Eliminar</button>
     </ng-container>
+    <button mat-raised-button (click)="cancelarAplicacion.emit(corte)" color="warn" *ngIf="corte.estatus !== 'PENDIENTE'">
+      <mat-icon>remove_circle_outline</mat-icon> Cancelar aplicación
+    </button>
   </mat-card-actions>
 </mat-card>

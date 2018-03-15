@@ -15,8 +15,9 @@ import { CobroTarjetaDialogComponent } from '../../components';
 export class CortesPendientesComponent implements OnInit, OnDestroy {
   grupos$: Observable<any>;
   sucursales$: Observable<string[]>;
-  _fecha: Date;
+  _fecha: Date = new Date();
   procesando = false;
+  skey = 'cortes-tarjeta.cortes-pendientes.filtro';
   constructor(
     private service: CorteDeTarjetaService,
     private _loadingService: TdLoadingService,
@@ -24,17 +25,15 @@ export class CortesPendientesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    const filtro =
-      JSON.parse(localStorage.getItem('SX_TES_CORTES_FILTRO')) || {};
-    if (filtro.fecha) {
-      this.fecha = new Date(filtro.fecha);
+    const jsonFecha = JSON.parse(localStorage.getItem(this.skey));
+    if (jsonFecha) {
+      this.fecha = new Date(jsonFecha);
     }
     this.load();
   }
 
   ngOnDestroy() {
-    const filtro = { fecha: this.fecha };
-    localStorage.setItem('SX_TES_CORTES_FILTRO', JSON.stringify(filtro));
+    localStorage.setItem(this.skey, JSON.stringify(this.fecha.toJSON()));
   }
 
   load() {

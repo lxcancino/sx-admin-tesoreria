@@ -14,8 +14,9 @@ import { finalize } from 'rxjs/operators';
 })
 export class CortesRegistradosComponent implements OnInit, OnDestroy {
   procesando = false;
-  periodo: Periodo;
+  periodo: Periodo = new Periodo();
   cortes$: Observable<Array<any>>;
+  skey = 'cortes-tarjeta.cortes-registrados.periodo';
 
   constructor(
     private dialog: MatDialog,
@@ -24,7 +25,7 @@ export class CortesRegistradosComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    const json = localStorage.getItem('SX_TES_CORTES_TARJETA_PER');
+    const json = localStorage.getItem(this.skey);
     if (json) {
       this.periodo = Periodo.parse(json);
     }
@@ -32,7 +33,7 @@ export class CortesRegistradosComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    localStorage.setItem('SX_TES_CORTES_TARJETA_PER', this.periodo.toJson());
+    localStorage.setItem(this.skey, this.periodo.toJson());
   }
 
   selectPeriodo() {
@@ -44,6 +45,7 @@ export class CortesRegistradosComponent implements OnInit, OnDestroy {
       .subscribe(per => {
         if (per) {
           this.periodo = per;
+          this.load();
         }
       });
   }
@@ -51,7 +53,10 @@ export class CortesRegistradosComponent implements OnInit, OnDestroy {
   load() {
     this.procesando = true;
     this.cortes$ = this.service
-      .list({ periodo: this.periodo })
+      .list({
+        fechaInicial: this.periodo.fechaFinal.toISOString(),
+        fechaFinal: this.periodo.fechaFinal.toISOString()
+      })
       .pipe(finalize(() => (this.procesando = false)));
   }
 

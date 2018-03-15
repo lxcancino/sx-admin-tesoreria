@@ -1,18 +1,3 @@
-<!-- <td-layout-nav-list toolbarTitle="SX CxC" navigationRoute="/" opened="true" mode="side">
-  <button mat-icon-button td-menu-button tdLayoutToggle>
-    <mat-icon>menu</mat-icon>
-  </button>
-  <div td-sidenav-content>
-    Sidenav content here
-  </div>
-  <div td-toolbar-content>
-    <button mat-icon-button tdLayoutNavListToggle>
-      <mat-icon>apps</mat-icon>
-    </button>
-    <span>Solicitudes de deposito</span>
-  </div>
-  Content goes here
-</td-layout-nav-list> -->
 <td-layout-nav-list #navList [opened]="media.registerQuery('gt-sm') | async" [mode]="(media.registerQuery('gt-sm') | async) ? 'side' : 'over'"
   [sidenavWidth]="(media.registerQuery('gt-xs') | async) ? '350px' : '100%'">
   <div td-sidenav-toolbar-content layout="row" layout-align="start center">
@@ -38,7 +23,10 @@
       </a>
       <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
     </ng-template>
+    <h3 matSubheader>Reportes</h3>
+
   </mat-nav-list>
+
   <div tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
     <router-outlet></router-outlet>
   </div>

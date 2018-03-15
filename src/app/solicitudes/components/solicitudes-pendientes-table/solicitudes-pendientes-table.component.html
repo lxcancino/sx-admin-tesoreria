@@ -1,0 +1,14 @@
+<td-data-table [columns]="columns" [data]="solicitudes">
+  <ng-template tdDataTableTemplate="folio" let-value="value" let-row="row">
+    <span (click)="select.emit(row)" class="cursor-pointer">{{value}}</span>
+  </ng-template>
+  <ng-template tdDataTableTemplate="referencia" let-value="value" let-row="row">
+    <span (click)="select.emit(row)" class="cursor-pointer">{{value}}</span>
+    <span *ngIf="row.cobro === null">{{value}}</span>
+  </ng-template>
+  <ng-template tdDataTableTemplate="edit" let-value="value" let-row="row" let-index="index">
+    <button mat-icon-button (click)="select.emit({row: row, index: index})">
+      <mat-icon>edit</mat-icon>
+    </button>
+  </ng-template>
+</td-data-table>

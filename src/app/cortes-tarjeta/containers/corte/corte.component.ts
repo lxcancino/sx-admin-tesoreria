@@ -10,7 +10,7 @@ import { CorteDeTarjetaService } from '../../services';
   template: `
     <div layout>
     <ng-template tdLoading [tdLoadingUntil]="!procesando" tdLoadingStrategy="overlay" >
-      <sx-corte-tarjeta-form [corte]="corte" (cancelar)="regresar()"
+      <sx-corte-tarjeta-form [corte]="corte" (cancelar)="regresar()" (cancelarAplicacion)="onCancelarAplicacion($event)"
         (aplicar)="onAplicar($event)" (eliminar)="onDelete($event)" flex="65">
       </sx-corte-tarjeta-form>
     </ng-template>
@@ -57,6 +57,26 @@ export class CorteComponent implements OnInit {
           this.procesando = true;
           this.service
             .delete(corte.id)
+            .pipe(finalize(() => (this.procesando = false)))
+            .subscribe(del => this.regresar());
+        }
+      });
+  }
+
+  onCancelarAplicacion(corte) {
+    this.dialogServie
+      .openConfirm({
+        title: 'Corte de tarjeta ',
+        message: 'Cancelar aplicacion de este corte de tarjeta',
+        acceptButton: 'Aceptar',
+        cancelButton: 'Cancelar'
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.procesando = true;
+          this.service
+            .cancelarAplicacion(corte)
             .pipe(finalize(() => (this.procesando = false)))
             .subscribe(del => this.regresar());
         }

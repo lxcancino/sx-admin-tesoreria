@@ -10,6 +10,7 @@ export class CorteTarjetaFormComponent implements OnInit {
   @Output() aplicar = new EventEmitter();
   @Output() cancelar = new EventEmitter();
   @Output() eliminar = new EventEmitter();
+  @Output() cancelarAplicacion = new EventEmitter();
 
   columns: ITdDataTableColumn[] = [
     { name: 'tipo', label: 'Tipo', width: 270 },

@@ -1,16 +1,12 @@
 <mat-card>
   <sx-search-title title="Pendientes de autorización" (search)="onSearch($event)">
+    <mat-checkbox class="options">Automático</mat-checkbox>
     <button mat-menu-item class="actions" (click)="load()">
       <mat-icon>refresh</mat-icon> Refrescar</button>
-    <button mat-menu-item class="actions" (click)="insert()">
-      <mat-icon>add</mat-icon> Nuevo</button>
+
   </sx-search-title>
   <mat-divider></mat-divider>
-  <div *tdLoading="'loading'; mode:'indeterminate'; type:'circle'; strategy:'overlay'; color:'accent'">
-    <sx-solicitudes-table [solicitudes]="solicitudes$ | async" (select)="onSelect($event)"></sx-solicitudes-table>
+  <div class="sols-panel" *tdLoading="'loading'; mode:'indeterminate'; type:'circle'; strategy:'overlay'; color:'accent'">
+    <sx-solicitudes-pendientes-table #table [solicitudes]="pendientes" (select)="onSelect($event)"></sx-solicitudes-pendientes-table>
   </div>
-
 </mat-card>
-<a mat-fab color="accent" class="mat-fab-bottom-right" (click)="insert()">
-  <mat-icon>add</mat-icon>
-</a>

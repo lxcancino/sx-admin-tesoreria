@@ -1,14 +1,25 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ITdDataTableColumn } from '@covalent/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy,
+  ViewChild
+} from '@angular/core';
+import {
+  ITdDataTableColumn,
+  TdDataTableColumnComponent,
+  TdDataTableComponent
+} from '@covalent/core';
 import { DatePipe, CurrencyPipe } from '@angular/common';
 
-import { SolicitudService } from '../../services/solicitud.service';
-
 @Component({
-  selector: 'sx-solicitudes-table',
-  templateUrl: 'solicitudes-table.component.html'
+  selector: 'sx-solicitudes-pendientes-table',
+  templateUrl: './solicitudes-pendientes-table.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SolicitudesTableComponent implements OnInit {
+export class SolicitudesPendientesTableComponent implements OnInit {
   @Input() solicitudes: Array<any>;
   @Output() select = new EventEmitter();
   columns: ITdDataTableColumn[] = [
@@ -30,43 +41,36 @@ export class SolicitudesTableComponent implements OnInit {
     {
       name: 'fechaDeposito',
       label: 'Fecha Dep',
-      numeric: false,
       format: date => this.datePipe.transform(date, 'dd/MM/yyyy'),
       width: 90
     },
     {
       name: 'referencia',
       label: 'Ref',
-      numeric: false,
       width: 90
     },
     {
       name: 'cliente.nombre',
       label: 'Cliente',
-      sortable: true,
-      numeric: false,
       nested: true,
       width: 300
     },
     {
       name: 'total',
       label: 'Total',
-      sortable: true,
-      numeric: false,
       format: value => this.currencyPipe.transform(value, 'USD'),
-      width: 100
+      width: 120
     },
-    {
-      name: 'comentario',
-      label: 'Comentario',
-      width: 200
-    }
+    { name: 'edit', label: 'Atender' }
   ];
-  constructor(
-    private service: SolicitudService,
-    private datePipe: DatePipe,
-    private currencyPipe: CurrencyPipe
-  ) {}
+
+  @ViewChild(TdDataTableComponent) dataTable: TdDataTableComponent;
+
+  constructor(private datePipe: DatePipe, private currencyPipe: CurrencyPipe) {}
 
   ngOnInit() {}
+
+  refresh() {
+    this.dataTable.refresh();
+  }
 }

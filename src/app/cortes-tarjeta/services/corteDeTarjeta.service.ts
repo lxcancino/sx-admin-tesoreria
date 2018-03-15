@@ -82,8 +82,12 @@ export class CorteDeTarjetaService {
   }
 
   aplicar(corte) {
-    console.log('Aplicando corte: ', corte.id);
     const url = `${this.apiUrl}/aplicar/${corte.id}`;
+    return this.http.put(url, {}).pipe(catchError(err => Observable.of(err)));
+  }
+
+  cancelarAplicacion(corte) {
+    const url = `${this.apiUrl}/cancelarAplicacion/${corte.id}`;
     return this.http.put(url, {}).pipe(catchError(err => Observable.of(err)));
   }
 
