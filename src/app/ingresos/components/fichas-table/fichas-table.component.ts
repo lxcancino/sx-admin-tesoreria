@@ -114,7 +114,7 @@ export class FichasTableComponent implements OnInit, OnChanges {
   fromRow = 1;
   currentPage = 1;
   pageSize = 100;
-  sortBy = 'folio';
+  sortBy = '';
   sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
 
   constructor(private _dataTableService: TdDataTableService) {}
@@ -126,10 +126,9 @@ export class FichasTableComponent implements OnInit, OnChanges {
       }
     }
   }
-  ngOnInit() {
-    // console.log('Fichas: ', this.fichas);
-    // this.filter();
-  }
+
+  ngOnInit() {}
+
   sort(sortEvent: ITdDataTableSortChangeEvent): void {
     this.sortBy = sortEvent.name;
     this.sortOrder = sortEvent.order;

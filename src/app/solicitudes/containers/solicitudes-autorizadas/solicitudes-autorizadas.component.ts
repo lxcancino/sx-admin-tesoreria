@@ -119,9 +119,7 @@ export class SolicitudesAutorizadasComponent implements OnInit {
       })
       .afterClosed()
       .subscribe(val => {
-        // console.log('Registrando ingreso en tesorería');
         this.service.ingreso(sol.id).subscribe(res => {
-          // console.log('Ingreso registrado: ', res.cobro.ingreso);
           this.load();
         });
       });
