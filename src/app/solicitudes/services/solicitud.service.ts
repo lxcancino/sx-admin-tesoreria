@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
+import { catchError, shareReplay } from 'rxjs/operators';
 import * as _ from 'lodash';
 
 import { SolicitudDeDeposito } from '../models/solicitudDeDeposito';
@@ -27,6 +28,7 @@ export class SolicitudService {
     });
     const url = `${this.apiUrl}/pendientes`;
     return this.http.get<SolicitudDeDeposito[]>(url, { params: params });
+    // .pipe(catchError(err => Observable.of(err)), shareReplay());
   }
 
   list(filtro: {} = {}): Observable<SolicitudDeDeposito[]> {
@@ -41,12 +43,14 @@ export class SolicitudService {
 
   autorizadas(
     filtro: {} = {},
-    periodo: Periodo = new Periodo()
+    periodo?: Periodo
   ): Observable<SolicitudDeDeposito[]> {
-    let params = new HttpParams()
-      .set('periodo.fechaInicial', periodo.fechaInicial.toISOString())
-      .set('periodo.fechaFinal', periodo.fechaFinal.toISOString());
-
+    let params = new HttpParams();
+    if (periodo) {
+      params = params
+        .set('periodo.fechaInicial', periodo.fechaInicial.toISOString())
+        .set('periodo.fechaFinal', periodo.fechaFinal.toISOString());
+    }
     _.forIn(filtro, (value, key) => {
       params = params.set(key, value);
     });
@@ -101,6 +105,11 @@ export class SolicitudService {
     const url = `${this.apiUrl}/cancelar/${sol.id}`;
     const params = new HttpParams().set('comentario', comentario);
     return this.http.put(url, sol, { params: params });
+  }
+
+  ingreso(id: string) {
+    const url = `${this.apiUrl}/ingreso/${id}`;
+    return this.http.put(url, {}).pipe(catchError(err => Observable.of(err)));
   }
 
   buscarDupicada(id: string): Observable<any> {

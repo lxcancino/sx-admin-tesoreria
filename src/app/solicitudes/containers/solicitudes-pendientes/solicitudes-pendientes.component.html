@@ -1,6 +1,6 @@
 <mat-card>
   <sx-search-title title="Pendientes de autorización" (search)="onSearch($event)">
-    <mat-checkbox class="options">Automático</mat-checkbox>
+    <mat-checkbox class="options" [(ngModel)]="watch">Automático</mat-checkbox>
     <button mat-menu-item class="actions" (click)="load()">
       <mat-icon>refresh</mat-icon> Refrescar</button>
 

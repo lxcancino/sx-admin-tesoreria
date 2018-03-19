@@ -2,7 +2,8 @@ import {
   Component,
   OnInit,
   ChangeDetectionStrategy,
-  ViewChild
+  ViewChild,
+  OnDestroy
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { MatDialog } from '@angular/material';
@@ -11,9 +12,10 @@ import * as _ from 'lodash';
 import { AutorizacionFormComponent } from '../../components';
 import { SolicitudService } from '../../services/solicitud.service';
 import { TdLoadingService } from '@covalent/core';
-import { finalize, delay, catchError } from 'rxjs/operators';
+import { finalize, delay, catchError, takeUntil } from 'rxjs/operators';
 
 import { SolicitudDeDeposito } from '../../models';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
   selector: 'sx-solicitudes-pendientes',
@@ -26,13 +28,17 @@ import { SolicitudDeDeposito } from '../../models';
       height: 100%;
     }
   `
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  ]
+  // changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SolicitudesPendientesComponent implements OnInit {
+export class SolicitudesPendientesComponent implements OnInit, OnDestroy {
   pendientes = [];
-  _atendiendo = false;
+  private _watch = true;
+  _dialogOpened = false;
   term = '';
+  reload$ = new Subject<boolean>();
+
+  destroy$ = new Subject<boolean>();
 
   @ViewChild('table') table;
 
@@ -40,10 +46,20 @@ export class SolicitudesPendientesComponent implements OnInit {
     private service: SolicitudService,
     private dialog: MatDialog,
     private _loadingService: TdLoadingService
-  ) {}
+  ) {
+    this.reload$
+      .takeUntil(this.destroy$)
+      .subscribe(val => console.log('Iniciar reloading ', val));
+  }
 
   ngOnInit() {
     this.load();
+  }
+
+  ngOnDestroy() {
+    this.watch = false;
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
   load() {
@@ -52,9 +68,13 @@ export class SolicitudesPendientesComponent implements OnInit {
       .pendientes({ term: this.term })
       .pipe(
         finalize(() => this._loadingService.resolve('loading')),
-        catchError(err => this.handleError(err))
+        takeUntil(this.destroy$)
       )
-      .subscribe(res => (this.pendientes = res));
+      .subscribe(res => {
+        this.pendientes = res;
+        // this.table.refresh();
+        this.autorizarNext();
+      });
   }
 
   onSearch(term) {
@@ -62,9 +82,14 @@ export class SolicitudesPendientesComponent implements OnInit {
     this.load();
   }
 
-  handleError(error) {
-    console.error(error);
-    return Observable.of([]);
+  autorizarNext() {
+    setTimeout(() => {
+      if (this.pendientes.length > 0 && this.watch && !this._dialogOpened) {
+        this.autorizar(this.pendientes[0], 0);
+      } else if (this.watch && !this._dialogOpened) {
+        this.load();
+      }
+    }, 4000);
   }
 
   onSelect(solicitud) {
@@ -96,37 +121,50 @@ export class SolicitudesPendientesComponent implements OnInit {
       width: '700px',
       data: { solicitud: sol, duplicada: duplicada }
     });
-    dialogRef.afterOpen().subscribe(() => (this._atendiendo = true));
+    dialogRef.afterOpen().subscribe(() => (this._dialogOpened = true));
     dialogRef.afterClosed().subscribe(val => {
       if (val) {
         if (val.posponer) {
           this.service.posponer(sol).subscribe(res => {
-            console.log('Solicitud pospuesta: ', res);
-            this.pendientes.splice(index, 1);
-            this.table.refresh();
+            // console.log('Solicitud pospuesta: ', res);
+            const data = [...this.pendientes];
+            data.splice(index, 1);
+            this.pendientes = data;
           });
         } else if (val.autorizar === true) {
-          console.log(' Autorizando: ', sol);
+          // console.log(' Autorizando: ', sol);
           this.service.autorizar(sol).subscribe(res => {
-            this.pendientes.splice(index, 1);
-            // this.list.refresh();
+            const data = [...this.pendientes];
+            data.splice(index, 1);
+            this.pendientes = data;
           });
         } else if (val.autorizar === false) {
-          console.log(' Rechazar: ', sol);
+          // console.log(' Rechazar: ', sol);
           this.service.rechazar(sol, val.comentario).subscribe(res => {
-            this.pendientes.splice(index, 1);
-            // this.list.refresh();
+            const data = [...this.pendientes];
+            data.splice(index, 1);
+            this.pendientes = data;
           });
         } else if (val.cancelar === true) {
-          console.log(' Cancelar: ', sol);
+          // console.log(' Cancelar: ', sol);
           this.service.cancelar(sol, val.comentario).subscribe(res => {
-            this.pendientes.splice(index, 1);
-            // this.list.refresh();
+            const data = [...this.pendientes];
+            data.splice(index, 1);
+            this.pendientes = data;
           });
         }
       }
-      this._atendiendo = false;
-      // this.autorizarNext();
+      this._dialogOpened = false;
+      this.autorizarNext();
     });
+  }
+
+  set watch(val) {
+    this._watch = val;
+    this.autorizarNext();
+  }
+
+  get watch() {
+    return this._watch;
   }
 }

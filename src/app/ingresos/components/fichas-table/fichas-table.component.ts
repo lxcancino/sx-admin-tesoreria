@@ -4,16 +4,25 @@ import {
   Input,
   Output,
   EventEmitter,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
-import { ITdDataTableColumn } from '@covalent/core';
+import {
+  ITdDataTableColumn,
+  TdDataTableSortingOrder,
+  TdDataTableService,
+  IPageChangeEvent,
+  ITdDataTableSortChangeEvent
+} from '@covalent/core';
 
 import { Ficha } from '../../models/ficha';
 
 @Component({
   selector: 'sx-fichas-table',
   template: `
-    <td-data-table [data]="fichas" [columns]="columns">
+    <td-data-table [data]="filteredData" [columns]="columns" sortable="true" [sortBy]="sortBy"
+     [sortOrder]="sortOrder" (sortChange)="sort($event)">
       <ng-template tdDataTableTemplate="tipo" let-value="value" let-row="row" >
         <span (click)="select.emit(row)" class="cursor-pointer" flex>{{value}}</span>
       </ng-template>
@@ -40,14 +49,26 @@ import { Ficha } from '../../models/ficha';
   styles: [``],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FichasTableComponent implements OnInit {
-  @Input() fichas: Ficha[] = [];
-  @Output() select = new EventEmitter<Ficha>();
-  @Output() ingreso = new EventEmitter<Ficha>();
-
+export class FichasTableComponent implements OnInit, OnChanges {
   columns: ITdDataTableColumn[] = [
-    { name: 'origen', label: 'Tipo', numeric: false, width: 70 },
-    { name: 'folio', label: 'Folio', numeric: false, width: 100 },
+    { name: 'origen', label: 'Tipo', width: 70 },
+    {
+      name: 'sucursalNombre',
+      label: 'Sucursal',
+      sortable: true,
+      filter: true,
+      nested: true,
+      numeric: false,
+      width: 130
+    },
+    {
+      name: 'folio',
+      label: 'Folio',
+      numeric: true,
+      filter: true,
+      sortable: true,
+      width: 100
+    },
     {
       name: 'fecha',
       label: 'Fecha',
@@ -57,7 +78,7 @@ export class FichasTableComponent implements OnInit {
     {
       name: 'tipoDeFicha',
       label: 'Tipo',
-      sortable: true,
+      sortable: false,
       numeric: false,
       nested: true,
       width: 150
@@ -65,7 +86,7 @@ export class FichasTableComponent implements OnInit {
     {
       name: 'cuentaDeBanco.descripcion',
       label: 'Cuenta',
-      sortable: true,
+      sortable: false,
       numeric: false,
       nested: true,
       width: 200
@@ -83,7 +104,78 @@ export class FichasTableComponent implements OnInit {
     }
   ];
 
-  constructor() {}
+  @Input() fichas: Ficha[] = [];
+  @Output() select = new EventEmitter<Ficha>();
+  @Output() ingreso = new EventEmitter<Ficha>();
 
-  ngOnInit() {}
+  filteredData: any[] = this.fichas;
+  filteredTotal: number = this.fichas.length;
+  searchTerm = '';
+  fromRow = 1;
+  currentPage = 1;
+  pageSize = 100;
+  sortBy = 'folio';
+  sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
+
+  constructor(private _dataTableService: TdDataTableService) {}
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.fichas) {
+      if (this.fichas) {
+        this.filter();
+      }
+    }
+  }
+  ngOnInit() {
+    // console.log('Fichas: ', this.fichas);
+    // this.filter();
+  }
+  sort(sortEvent: ITdDataTableSortChangeEvent): void {
+    this.sortBy = sortEvent.name;
+    this.sortOrder = sortEvent.order;
+    this.filter();
+  }
+
+  search(searchTerm: string): void {
+    this.searchTerm = searchTerm;
+    this.filter();
+  }
+  page(pagingEvent: IPageChangeEvent): void {
+    this.fromRow = pagingEvent.fromRow;
+    this.currentPage = pagingEvent.page;
+    this.pageSize = pagingEvent.pageSize;
+    this.filter();
+  }
+
+  filter(): void {
+    let newData: any[] = this.fichas;
+    const excludedColumns: string[] = this.columns
+      .filter((column: ITdDataTableColumn) => {
+        return (
+          (column.filter === undefined && column.hidden === true) ||
+          (column.filter !== undefined && column.filter === false)
+        );
+      })
+      .map((column: ITdDataTableColumn) => {
+        return column.name;
+      });
+    newData = this._dataTableService.filterData(
+      newData,
+      this.searchTerm,
+      true,
+      excludedColumns
+    );
+    this.filteredTotal = newData.length;
+    newData = this._dataTableService.sortData(
+      newData,
+      this.sortBy,
+      this.sortOrder
+    );
+    newData = this._dataTableService.pageData(
+      newData,
+      this.fromRow,
+      this.currentPage * this.pageSize
+    );
+    this.filteredData = newData;
+  }
 }

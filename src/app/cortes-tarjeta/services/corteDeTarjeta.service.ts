@@ -54,6 +54,19 @@ export class CorteDeTarjetaService {
     });
   }
 
+  reporteDeComisionesTarjeta(sucursal, fecha: Date) {
+    const params = new HttpParams()
+      .set('sucursal', sucursal)
+      .set('fecha', fecha.toISOString());
+    const headers = new HttpHeaders().set('Content-type', 'application/pdf');
+    const url = `${this.apiUrl}/reporteDeComisionesTarjeta`;
+    return this.http.get(url, {
+      headers: headers,
+      params: params,
+      responseType: 'blob'
+    });
+  }
+
   generar(cobrosPorSucursal) {
     const url = `${this.apiUrl}/generarCortes`;
     return this.http

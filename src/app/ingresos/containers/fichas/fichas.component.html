@@ -1,6 +1,6 @@
 <mat-card>
   <div layout class="pad-left pad-right pad-top">
-    <span class="mat-title">Fichas de depósito</span>
+    <span class="mat-title">Fichas de depósito ({{tipo}})</span>
     <span flex></span>
     <mat-form-field>
       <input matInput [matDatepicker]="picker" placeholder="Fecha" [(ngModel)]="fechaInicial">
@@ -15,7 +15,7 @@
       <mat-menu #toolbarMenu="matMenu">
         <button mat-menu-item (click)="load()">
           <mat-icon>refresh</mat-icon> Refrescar</button>
-        <button mat-menu-item (click)="generar(fechaInicial)">
+        <button mat-menu-item (click)="generar(fechaInicial)" *ngIf="tipo == 'CREDITO'">
           <mat-icon>build</mat-icon> Generar</button>
       </mat-menu>
 

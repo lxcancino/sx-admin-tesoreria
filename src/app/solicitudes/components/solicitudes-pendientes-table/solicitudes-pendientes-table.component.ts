@@ -5,7 +5,8 @@ import {
   Output,
   EventEmitter,
   ChangeDetectionStrategy,
-  ViewChild
+  ViewChild,
+  OnChanges
 } from '@angular/core';
 import {
   ITdDataTableColumn,
@@ -19,8 +20,8 @@ import { DatePipe, CurrencyPipe } from '@angular/common';
   templateUrl: './solicitudes-pendientes-table.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SolicitudesPendientesTableComponent implements OnInit {
-  @Input() solicitudes: Array<any>;
+export class SolicitudesPendientesTableComponent implements OnInit, OnChanges {
+  @Input() solicitudes: any[];
   @Output() select = new EventEmitter();
   columns: ITdDataTableColumn[] = [
     { name: 'folio', label: 'Folio', sortable: true, numeric: true, width: 70 },
@@ -69,6 +70,10 @@ export class SolicitudesPendientesTableComponent implements OnInit {
   constructor(private datePipe: DatePipe, private currencyPipe: CurrencyPipe) {}
 
   ngOnInit() {}
+
+  ngOnChanges(changes) {
+    // console.log('Changes: ', changes);
+  }
 
   refresh() {
     this.dataTable.refresh();

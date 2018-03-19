@@ -33,10 +33,7 @@ export class FichasService {
   }
 
   list(filtro: {} = {}): Observable<Ficha[]> {
-    let params = new HttpParams().set(
-      'sucursal',
-      this.config.getAppConfig().sucursal.id
-    );
+    let params = new HttpParams();
     _.forIn(filtro, (value, key) => {
       params = params.set(key, value);
     });

@@ -7,6 +7,7 @@ import { TdDialogService } from '@covalent/core';
 import { MatDialog } from '@angular/material';
 import { GenerarFichaComponent, FichaInfoComponent } from '../../components';
 import * as moment from 'moment';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'sx-fichas',
@@ -16,17 +17,18 @@ export class FichasComponent implements OnInit, OnDestroy {
   fichas$: Observable<Ficha[]>;
   _fechaInicial = new Date();
   procesando = false;
+  tipo: string;
   constructor(
     private service: FichasService,
     private dialog: MatDialog,
-    private dialogService: TdDialogService
+    private dialogService: TdDialogService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
+    this.route.data.subscribe(data => (this.tipo = data.tipo));
     const filter = JSON.parse(localStorage.getItem('SX_TES_FICHAS_FILTER'));
     if (filter) {
-      // console.log('Filter: ', filter);
-      // console.log('Fecha: ', moment(filter.fechaInicial).toDate());
       this.fechaInicial = moment(filter.fechaInicial).toDate();
     } else {
       this.load();
@@ -41,7 +43,7 @@ export class FichasComponent implements OnInit, OnDestroy {
   load() {
     this.procesando = true;
     this.fichas$ = this.service
-      .list({ fecha: this.fechaInicial.toISOString() })
+      .list({ fecha: this.fechaInicial.toISOString(), cartera: this.tipo })
       .pipe(finalize(() => (this.procesando = false)));
   }
 

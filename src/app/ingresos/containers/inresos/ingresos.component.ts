@@ -23,9 +23,15 @@ export class IngresosComponent implements OnInit {
     },
     {
       path: 'fichas',
-      title: 'Fichas',
-      description: 'Fichas de depósito',
+      title: 'Fichas (CRE)',
+      description: 'Fichas de depósito Crédito',
       icon: 'filter_none'
+    },
+    {
+      path: 'fichasContado',
+      title: 'Fichas (CON)',
+      description: 'Fichas de depósito contado',
+      icon: 'my_library_books'
     }
   ];
 

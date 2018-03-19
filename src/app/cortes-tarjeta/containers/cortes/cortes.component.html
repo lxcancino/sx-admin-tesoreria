@@ -22,6 +22,12 @@
       </a>
       <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
     </ng-template>
+    <h3 matSubheader>Reportes</h3>
+    <mat-list-item (click)="comisionesTarjeta()">
+      <mat-icon matListIcon>poll</mat-icon>
+      <h3 matLine> Comisiones tarjeta</h3>
+      <p matLine> Reporte de comisiones</p>
+    </mat-list-item>
   </mat-nav-list>
   <div tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
     <router-outlet></router-outlet>

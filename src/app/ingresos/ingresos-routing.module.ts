@@ -13,7 +13,16 @@ const routes: Routes = [
       { path: 'cobros', component: fromContainers.CobrosComponent },
       { path: 'cobros/create', component: fromContainers.CobroCreateComponent },
       { path: 'cobros/:id', component: fromContainers.CobroEditComponent },
-      { path: 'fichas', component: fromContainers.FichasComponent }
+      {
+        path: 'fichas',
+        component: fromContainers.FichasComponent,
+        data: { tipo: 'CREDITO' }
+      },
+      {
+        path: 'fichasContado',
+        component: fromContainers.FichasComponent,
+        data: { tipo: 'CONTADO' }
+      }
     ]
   }
 ];

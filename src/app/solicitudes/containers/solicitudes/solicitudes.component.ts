@@ -14,7 +14,7 @@ export class SolicitudesComponent implements OnInit {
       icon: 'repeat'
     },
     {
-      route: 'autorizados',
+      route: 'autorizadas',
       title: 'Autorizados',
       description: 'Depositos autorizados',
       icon: 'check'
@@ -30,13 +30,13 @@ export class SolicitudesComponent implements OnInit {
       title: 'Canceladas',
       descripcion: 'Solicitudes canceladas',
       icon: 'cancel'
-    },
-    {
-      route: 'cobros',
-      title: 'Cobros',
-      description: 'Registro de cobros',
-      icon: 'file_download'
     }
+    // {
+    //   route: 'cobros',
+    //   title: 'Cobros',
+    //   description: 'Registro de cobros',
+    //   icon: 'file_download'
+    // }
   ];
 
   constructor(public media: TdMediaService) {}

@@ -3,7 +3,9 @@ import { Routes, RouterModule } from '@angular/router';
 import {
   SolicitudesComponent,
   SolicitudesPendientesComponent,
-  SolicitudesAutorizadasComponent
+  SolicitudesAutorizadasComponent,
+  SolicitudesTransitoComponent,
+  SolicitudesCanceladasComponent
 } from './containers';
 
 const routes: Routes = [
@@ -12,7 +14,9 @@ const routes: Routes = [
     component: SolicitudesComponent,
     children: [
       { path: 'pendientes', component: SolicitudesPendientesComponent },
-      { path: 'autorizadas', component: SolicitudesAutorizadasComponent }
+      { path: 'autorizadas', component: SolicitudesAutorizadasComponent },
+      { path: 'transito', component: SolicitudesTransitoComponent },
+      { path: 'canceladas', component: SolicitudesCanceladasComponent }
     ]
   }
 ];

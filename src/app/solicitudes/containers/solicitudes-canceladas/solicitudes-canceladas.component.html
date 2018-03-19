@@ -1,7 +1,7 @@
 <mat-card layout>
   <div layout="row" layout-align="start center" class="pad-left-sm pad-right-sm">
     <span class="push-left-sm">
-      <span class="mat-title">Depositos autorizados</span>
+      <span class="mat-title">Solicitudes de depositos CANCELADAS</span>
     </span>
     <span flex></span>
     <span>
@@ -15,13 +15,11 @@
       </mat-menu>
     </span>
   </div>
-  <div layout layout-align="start center" class="filter-panel pad-left-sm pad-right-sm">
-    <td-search-input placeholder="Sucursal" showUnderline="true" (searchDebounce)="searchSucursal($event)" class="pad-right"></td-search-input>
+  <div layout="row" layout-align="start center" class="pad-left-sm pad-right-sm">
+    <td-search-input placeholder="Sucursal" showUnderline="true" (searchDebounce)="searchSucursal($event)" flex class="pad-right"></td-search-input>
     <td-search-input placeholder="Folio" showUnderline="true" (searchDebounce)="searchFolio($event)" class="pad-right"></td-search-input>
-    <td-search-input placeholder="Cliente" showUnderline="true" (searchDebounce)="searchCliente($event)" flex class="pad-right"></td-search-input>
+    <td-search-input placeholder="Cliente" showUnderline="true" (searchDebounce)="searchCliente($event)" class="pad-right"></td-search-input>
     <td-search-input type="number" placeholder="Total" showUnderline="true" (searchDebounce)="searchTotal($event)" class="pad-right"></td-search-input>
-    <td-search-input placeholder="Banco destino" showUnderline="true" (searchDebounce)="searchBanco($event)" class="pad-right">
-    </td-search-input>
     <mat-form-field>
       <input matInput [matDatepicker]="picker" placeholder="Fecha deposito" (dateChange)="searchFecha($event.value)">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -34,6 +32,9 @@
 
         <ng-template tdDataTableTemplate="total" let-value="value">
           <span>{{value | currency: 'USD': 1.2-2 }}</span>
+        </ng-template>
+        <ng-template tdDataTableTemplate="cancelacion" let-value="value">
+          <span>{{value | date: 'dd/MM/yyyy' }}</span>
         </ng-template>
 
         <ng-template tdDataTableTemplate="sucursal" let-value="value" let-row="row">
@@ -50,10 +51,6 @@
         </ng-template>
         <ng-template tdDataTableTemplate="cobro.formaDePago" let-value="value">
           <abbr title="{{value}}">{{getFormaDePago(value)}}</abbr>
-        </ng-template>
-        <ng-template tdDataTableTemplate="registrar" let-value="value" let-row="row">
-          <button mat-button color="primary" *ngIf="!row.cobro.ingreso" (click)="registrarIngreso(row)">Registrar</button>
-          <mat-icon *ngIf="row.cobro.ingreso" class="tc-green-500">done</mat-icon>
         </ng-template>
       </td-data-table>
     </div>
