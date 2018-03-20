@@ -29,8 +29,8 @@
     </mat-form-field>
   </div>
   <ng-template tdLoading [tdLoadingUntil]="!procesando" tdLoadingStrategy="overlay" tdLoadingType="linear" flex>
-    <div layout>
-      <td-data-table flex [data]="solicitudes$ | async" [columns]="columns" [style.width.px]="200">
+    <div layout class="table-panel">
+      <td-data-table [data]="solicitudes$ | async" [columns]="columns" class="table" flex>
 
         <ng-template tdDataTableTemplate="total" let-value="value">
           <span>{{value | currency: 'USD': 1.2-2 }}</span>

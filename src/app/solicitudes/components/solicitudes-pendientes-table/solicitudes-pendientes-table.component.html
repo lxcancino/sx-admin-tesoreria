@@ -4,7 +4,7 @@
   </ng-template>
   <ng-template tdDataTableTemplate="referencia" let-value="value" let-row="row">
     <span (click)="select.emit(row)" class="cursor-pointer">{{value}}</span>
-    <span *ngIf="row.cobro === null">{{value}}</span>
+    <!-- <span *ngIf="row.cobro === null">{{value}}</span> -->
   </ng-template>
   <ng-template tdDataTableTemplate="edit" let-value="value" let-row="row" let-index="index">
     <button mat-icon-button (click)="select.emit({row: row, index: index})">

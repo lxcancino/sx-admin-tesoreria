@@ -48,13 +48,12 @@ export class SolicitudesPendientesTableComponent implements OnInit, OnChanges {
     {
       name: 'referencia',
       label: 'Ref',
-      width: 90
+      width: 200
     },
     {
       name: 'cliente.nombre',
       label: 'Cliente',
-      nested: true,
-      width: 300
+      nested: true
     },
     {
       name: 'total',
@@ -62,7 +61,7 @@ export class SolicitudesPendientesTableComponent implements OnInit, OnChanges {
       format: value => this.currencyPipe.transform(value, 'USD'),
       width: 120
     },
-    { name: 'edit', label: 'Atender' }
+    { name: 'edit', label: 'Atender', width: 120 }
   ];
 
   @ViewChild(TdDataTableComponent) dataTable: TdDataTableComponent;

@@ -16,6 +16,11 @@ import { PagosUtils } from 'app/_core/services/pagos-utils.service';
     .filter-panel {
       overflow-x: auto;
     }
+    .table-panel {
+      overflow: auto;
+      height: 500px;
+      width: 100%;
+    }
   `
   ]
 })
@@ -26,11 +31,11 @@ export class SolicitudesAutorizadasComponent implements OnInit {
     { name: 'cliente.nombre', label: 'Cliente', width: 300 },
     { name: 'fechaDeposito', label: 'Fecha D', width: 100 },
     { name: 'cobro.formaDePago', label: 'F.P', width: 150 },
-    { name: 'cobro.dateCreated', label: 'Autorizado', width: 150 },
+    // { name: 'cobro.dateCreated', label: 'Autorizado', width: 150 },
     { name: 'total', label: 'Total', width: 100 },
     { name: 'banco.nombre', label: 'Banco', width: 150 },
-    { name: 'cuenta.descripcion', label: 'Destino', width: 170 },
-    { name: 'updateUser', label: 'Usuario', width: 150 },
+    // { name: 'cuenta.descripcion', label: 'Destino', width: 170 },
+    // { name: 'updateUser', label: 'Usuario', width: 150 },
     { name: 'registrar', label: '', width: 160 }
   ];
 

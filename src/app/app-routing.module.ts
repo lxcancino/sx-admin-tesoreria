@@ -26,6 +26,10 @@ const routes: Routes = [
         path: 'cortesTarjeta',
         loadChildren:
           './cortes-tarjeta/cortes-tarjeta.module#CortesTarjetaModule'
+      },
+      {
+        path: 'movimientos',
+        loadChildren: './movimientos/movimientos.module#MovimientosModule'
       }
     ]
   }

@@ -37,6 +37,11 @@
         <input matInput placeholder="Banco destino" [value]="solicitud.cuenta.descripcion" [disabled]="true" class="tc-indigo-800">
       </mat-form-field>
     </div>
+    <div>
+      <mat-form-field flex>
+        <input matInput placeholder="Referencia" [value]="solicitud.referencia" [disabled]="true" class="tc-indigo-800">
+      </mat-form-field>
+    </div>
     <td-message *ngIf="duplicada" label="Posible duplicada con:" sublabel="Sol: {{duplicada.folio}} - {{duplicada.sucursal.nombre}}  Solicitó: {{duplicada.updateUser}}"
       color="warn" icon="error">
     </td-message>

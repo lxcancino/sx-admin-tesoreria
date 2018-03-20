@@ -32,6 +32,11 @@ export class MainPageComponent implements OnInit {
       icon: 'credit_card',
       route: '/cortesTarjeta',
       title: 'Cortes de tarjeta'
+    },
+    {
+      icon: '',
+      route: '/movimientos',
+      title: 'Movimientos de tesorería'
     }
 
     // {
