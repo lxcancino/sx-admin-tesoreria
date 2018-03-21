@@ -34,7 +34,7 @@ export class MainPageComponent implements OnInit {
       title: 'Cortes de tarjeta'
     },
     {
-      icon: '',
+      icon: 'storage',
       route: '/movimientos',
       title: 'Movimientos de tesorería'
     }

@@ -10,10 +10,10 @@ import { MatDialog } from '@angular/material';
 export class MovimientosTesoreriaComponent implements OnInit {
   navigation = [
     {
-      path: 'depositoRetiro',
+      path: 'depositosRetiros',
       title: 'Depósito/Retiro',
-      description: 'Opcion 1',
-      icon: ''
+      description: 'Depositos y retiros',
+      icon: 'swap_horiz'
     },
     {
       path: 'comisiones',

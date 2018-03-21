@@ -8,6 +8,20 @@ export class Periodo {
     return new Periodo(f1, f2);
   }
 
+  static mesActual(): Periodo {
+    const now = moment();
+    const f1 = moment(now).startOf('month');
+    const f2 = moment(now).endOf('month');
+    return new Periodo(f1.toDate(), f2.toDate());
+  }
+
+  static monthToDay(): Periodo {
+    const now = moment();
+    const f1 = moment(now).startOf('month');
+    const f2 = moment(now);
+    return new Periodo(f1.toDate(), f2.toDate());
+  }
+
   constructor(
     public fechaInicial: Date = new Date(),
     public fechaFinal: Date = new Date()
