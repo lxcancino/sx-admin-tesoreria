@@ -87,24 +87,24 @@ export class SolicitudService {
 
   autorizar(sol: SolicitudDeDeposito) {
     const url = `${this.apiUrl}/autorizar/${sol.id}`;
-    return this.http.put(url, sol);
+    return this.http.put(url, {});
   }
 
   posponer(sol: SolicitudDeDeposito) {
     const url = `${this.apiUrl}/posponer/${sol.id}`;
-    return this.http.put(url, sol);
+    return this.http.put(url, {});
   }
 
   rechazar(sol: SolicitudDeDeposito, comentario: string) {
     const url = `${this.apiUrl}/rechazar/${sol.id}`;
     const params = new HttpParams().set('comentario', comentario);
-    return this.http.put(url, sol, { params: params });
+    return this.http.put(url, {}, { params: params });
   }
 
   cancelar(sol: SolicitudDeDeposito, comentario: string) {
     const url = `${this.apiUrl}/cancelar/${sol.id}`;
     const params = new HttpParams().set('comentario', comentario);
-    return this.http.put(url, sol, { params: params });
+    return this.http.put(url, {}, { params: params });
   }
 
   ingreso(id: string) {

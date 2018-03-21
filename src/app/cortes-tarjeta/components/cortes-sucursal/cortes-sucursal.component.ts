@@ -62,13 +62,13 @@ export class CortesSucursalComponent implements OnInit, OnChanges {
     return this.totalDebito + this.totalCredito;
   }
   get comisionDebito() {
-    return _.round(this.totalDebito * (2.36 / 100), 2);
+    return _.round(this.totalDebito * (1.46 / 100), 2);
   }
   get comisionDebitoIva() {
     return _.round(this.comisionDebito * 0.16, 2);
   }
   get comisionCredito() {
-    return _.round(this.totalDebito * (1.46 / 100), 2);
+    return _.round(this.totalCredito * (2.36 / 100), 2);
   }
   get comisionCreditoIva() {
     return _.round(this.comisionCredito * 0.16, 2);
