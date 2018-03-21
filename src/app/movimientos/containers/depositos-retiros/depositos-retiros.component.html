@@ -1,0 +1,10 @@
+<mat-card>
+  <sx-search-title title="Depositos/Retiros">
+    <button mat-menu-item class="actions">
+      <mat-icon>refresh</mat-icon>Refrescar</button>
+  </sx-search-title>
+  <mat-divider></mat-divider>
+  <div *tdLoading="let movimientos until movimientos$ | async; type: 'circle'; color: 'accent'">
+    <sx-movimiento-tesoreria-table [data]="movimientos"></sx-movimiento-tesoreria-table>
+  </div>
+</mat-card>
