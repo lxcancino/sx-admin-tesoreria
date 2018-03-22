@@ -1,13 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
+import { finalize } from 'rxjs/operators';
+import { MatDialog } from '@angular/material';
+import { TdDialogService } from '@covalent/core';
+
+import * as moment from 'moment';
+import * as _ from 'lodash';
+
+import { GenerarFichaComponent, FichaInfoComponent } from '../../components';
 import { FichasService } from '../../services';
 import { Ficha } from '../../models/ficha';
-import { finalize } from 'rxjs/operators';
-import { TdDialogService } from '@covalent/core';
-import { MatDialog } from '@angular/material';
-import { GenerarFichaComponent, FichaInfoComponent } from '../../components';
-import * as moment from 'moment';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'sx-fichas',
@@ -16,8 +19,13 @@ import { ActivatedRoute } from '@angular/router';
 export class FichasComponent implements OnInit, OnDestroy {
   fichas$: Observable<Ficha[]>;
   _fechaInicial = new Date();
+  _sucursal = '';
   procesando = false;
   tipo: string;
+  efectivo$: Observable<number>;
+  otros$: Observable<number>;
+  mismo$: Observable<number>;
+
   constructor(
     private service: FichasService,
     private dialog: MatDialog,
@@ -30,21 +38,46 @@ export class FichasComponent implements OnInit, OnDestroy {
     const filter = JSON.parse(localStorage.getItem('SX_TES_FICHAS_FILTER'));
     if (filter) {
       this.fechaInicial = moment(filter.fechaInicial).toDate();
+      this.sucursal = filter.sucursal;
     } else {
       this.load();
     }
   }
 
   ngOnDestroy() {
-    const filter = { fechaInicial: this.fechaInicial };
+    const filter = { fechaInicial: this.fechaInicial, sucursal: this.sucursal };
     localStorage.setItem('SX_TES_FICHAS_FILTER', JSON.stringify(filter));
   }
 
   load() {
     this.procesando = true;
     this.fichas$ = this.service
-      .list({ fecha: this.fechaInicial.toISOString(), cartera: this.tipo })
+      .list({
+        fecha: this.fechaInicial.toISOString(),
+        cartera: this.tipo,
+        sucursal: this.sucursal
+      })
       .pipe(finalize(() => (this.procesando = false)));
+    this.efectivo$ = this.fichas$.map(fichas => {
+      return _.sumBy(
+        fichas,
+        item => (item.tipoDeFicha === 'EFECTIVO' ? item.total : 0)
+      );
+    });
+
+    this.otros$ = this.fichas$.map(fichas => {
+      return _.sumBy(
+        fichas,
+        item => (item.tipoDeFicha === 'OTROS_BANCOS' ? item.total : 0)
+      );
+    });
+
+    this.mismo$ = this.fichas$.map(fichas => {
+      return _.sumBy(
+        fichas,
+        item => (item.tipoDeFicha === 'MISMO_BANCO' ? item.total : 0)
+      );
+    });
   }
 
   get fechaInicial() {
@@ -52,6 +85,14 @@ export class FichasComponent implements OnInit, OnDestroy {
   }
   set fechaInicial(val) {
     this._fechaInicial = val;
+    this.load();
+  }
+
+  get sucursal() {
+    return this._sucursal;
+  }
+  set sucursal(val) {
+    this._sucursal = val;
     this.load();
   }
 

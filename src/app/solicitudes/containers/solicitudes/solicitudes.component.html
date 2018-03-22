@@ -24,7 +24,17 @@
       <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
     </ng-template>
     <h3 matSubheader>Reportes</h3>
-
+    <mat-list-item (click)="facturasCobradas()">
+      <mat-icon matListAvatar>insert_chart</mat-icon>
+      <h3 matLine> Factuas </h3>
+      <p matLine> Facturas cobradas </p>
+    </mat-list-item>
+    <mat-list-item (click)="cobranzaCod()">
+      <mat-icon matListAvatar>insert_chart</mat-icon>
+      <h3 matLine> Cobranza </h3>
+      <p matLine> Cobranza COD </p>
+    </mat-list-item>
+    <mat-divider [inset]="true"></mat-divider>
   </mat-nav-list>
 
   <div tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">

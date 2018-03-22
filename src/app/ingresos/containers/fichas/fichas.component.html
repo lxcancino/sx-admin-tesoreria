@@ -1,12 +1,22 @@
 <mat-card>
   <div layout class="pad-left pad-right pad-top">
     <span class="mat-title">Fichas de depósito ({{tipo}})</span>
-    <span flex></span>
-    <mat-form-field>
-      <input matInput [matDatepicker]="picker" placeholder="Fecha" [(ngModel)]="fechaInicial">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
+    <span class="tc-indigo-500 pad-md" flex>
+      <span class="pad-left"> Efectivo: {{efectivo$ | async | currency:'USD':1.2-2}}</span>
+      <span class="pad-left"> Otros: {{otros$ | async | currency:'USD':1.2-2}}</span>
+      <span class="pad-left"> Mismo: {{mismo$ | async | currency:'USD':1.2-2}}</span>
+    </span>
+    <span>
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Fecha" [(ngModel)]="fechaInicial">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Sucursal" [(ngModel)]="sucursal">
+      </mat-form-field>
+    </span>
+
 
     <span>
       <button mat-icon-button [matMenuTriggerFor]="toolbarMenu">

@@ -31,16 +31,19 @@ export class SolicitudesAutorizadasComponent implements OnInit {
     { name: 'cliente.nombre', label: 'Cliente', width: 300 },
     { name: 'fechaDeposito', label: 'Fecha D', width: 100 },
     { name: 'cobro.formaDePago', label: 'F.P', width: 150 },
-    // { name: 'cobro.dateCreated', label: 'Autorizado', width: 150 },
     { name: 'total', label: 'Total', width: 100 },
     { name: 'banco.nombre', label: 'Banco', width: 150 },
-    // { name: 'cuenta.descripcion', label: 'Destino', width: 170 },
-    // { name: 'updateUser', label: 'Usuario', width: 150 },
+    { name: 'fechaCobranza', label: 'Fecha Cob', width: 100 },
     { name: 'registrar', label: '', width: 160 }
   ];
 
+  selectedRows: any[] = [];
+
   solicitudes = [];
   solicitudes$: Observable<SolicitudDeDeposito[]>;
+  totalTransferencia$: Observable<number>;
+  totalCheque$: Observable<number>;
+  totalEfectivo$: Observable<number>;
   procesando = false;
 
   search$ = new BehaviorSubject<string>('');
@@ -51,6 +54,7 @@ export class SolicitudesAutorizadasComponent implements OnInit {
     sucursal?: string;
     total?: number;
     fechaDeposito?: string;
+    fechaCobranza?: string;
     banco?: string;
   } = {};
 
@@ -61,8 +65,8 @@ export class SolicitudesAutorizadasComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // this.solicitudes$.subscribe( res => this.solicitudes = res);
     this.load();
+    // this.solicitudes$.subscribe(res => console.log(res));
   }
 
   load() {
@@ -72,6 +76,39 @@ export class SolicitudesAutorizadasComponent implements OnInit {
       .do(term => (this.procesando = true))
       .catch(err => this.handleError(err))
       .finally(() => (this.procesando = false));
+    this.totalTransferencia$ = this.solicitudes$.map((data: Array<any>) => {
+      return _.sumBy(data, item => {
+        if (item.cobro.formaDePago === 'TRANSFERENCIA') {
+          return item.total;
+        } else {
+          return 0;
+        }
+      });
+    });
+
+    this.totalCheque$ = this.solicitudes$.map((data: Array<any>) => {
+      return _.sumBy(data, item => {
+        if (item.cheque > 0) {
+          return item.cheque;
+        } else {
+          return 0;
+        }
+      });
+    });
+
+    this.totalEfectivo$ = this.solicitudes$.map((data: Array<any>) => {
+      return _.sumBy(data, item => {
+        if (item.efectivo > 0) {
+          return item.efectivo;
+        } else {
+          return 0;
+        }
+      });
+    });
+  }
+
+  selectionChange() {
+    console.log('Selection: ', this.selectedRows);
   }
 
   search(data) {}
@@ -100,6 +137,14 @@ export class SolicitudesAutorizadasComponent implements OnInit {
     }
     this.load();
   }
+  searchFechaCobranza(fecha: Date) {
+    if (fecha !== null && _.isDate(fecha)) {
+      this.filter.fechaCobranza = fecha.toISOString();
+    } else {
+      this.filter.fechaCobranza = null;
+    }
+    this.load();
+  }
   searchBanco(banco) {
     this.filter.banco = banco;
     this.load();
@@ -112,6 +157,13 @@ export class SolicitudesAutorizadasComponent implements OnInit {
 
   getFormaDePago(formaDePago) {
     return this.pagoUtils.slim(formaDePago);
+  }
+
+  registrarBatch() {
+    const sols = this.selectedRows.filter(row => row.cobro.ingreso === null);
+    if (sols.length > 0) {
+      console.log('Registrando ingreso de :', sols);
+    }
   }
 
   registrarIngreso(sol: SolicitudDeDeposito) {

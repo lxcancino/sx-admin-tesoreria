@@ -3,6 +3,9 @@
     <span class="push-left-sm">
       <span class="mat-title">Depositos autorizados</span>
     </span>
+    <span class="pad-left tc-indigo-600"> TRANSFERENCIA: {{totalTransferencia$ | async | currency: 'USD':1.2-2}}</span>
+    <span class="pad-left tc-indigo-600"> DEP CHEQUE: {{totalCheque$ | async | currency: 'USD':1.2-2}}</span>
+    <span class="pad-left tc-indigo-600"> DEP EFECTIVO: {{totalEfectivo$ | async | currency: 'USD':1.2-2}}</span>
     <span flex></span>
     <span>
       <button mat-icon-button (click)="load()">
@@ -12,6 +15,7 @@
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #toolbarMenu="matMenu">
+        <button mat-menu-item [disabled]="selectedRows.length===0" (click)="registrarBatch()">Registrar</button>
       </mat-menu>
     </span>
   </div>
@@ -27,10 +31,16 @@
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker2" placeholder="Fecha cobranza" (dateChange)="searchFechaCobranza($event.value)">
+      <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+      <mat-datepicker #picker2></mat-datepicker>
+    </mat-form-field>
   </div>
   <ng-template tdLoading [tdLoadingUntil]="!procesando" tdLoadingStrategy="overlay" tdLoadingType="linear" flex>
     <div layout class="table-panel">
-      <td-data-table [data]="solicitudes$ | async" [columns]="columns" class="table" flex>
+      <td-data-table [data]="solicitudes$ | async" [columns]="columns" class="table" [selectable]="true" [(ngModel)]="selectedRows"
+        (selectAll)="selectionChange()" (rowSelect)="selectionChange()" flex>
 
         <ng-template tdDataTableTemplate="total" let-value="value">
           <span>{{value | currency: 'USD': 1.2-2 }}</span>
@@ -43,6 +53,9 @@
         </ng-template>
 
         <ng-template tdDataTableTemplate="fechaDeposito" let-value="value">
+          <span>{{value | date: 'dd/MM/yyyy' }}</span>
+        </ng-template>
+        <ng-template tdDataTableTemplate="fechaCobranza" let-value="value">
           <span>{{value | date: 'dd/MM/yyyy' }}</span>
         </ng-template>
         <ng-template tdDataTableTemplate="cobro.dateCreated" let-value="value">

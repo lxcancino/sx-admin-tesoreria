@@ -8,6 +8,7 @@ import { UsoCfdiComponent } from './uso-cfdi/uso-cfdi.component';
 import { FechaDialogComponent } from './fecha-dilog/fecha.dialog.component';
 import { PeriodoDialogComponent } from './periodo-dialog/periodo-dialog.component';
 import { PeriodoPickerComponent } from './periodo-picker/periodo-picker.component';
+import { SucursalFieldComponent } from './sucursal-field/sucursal-field.component';
 
 export const components = [
   DireccionComponent,
@@ -19,7 +20,8 @@ export const components = [
   UsoCfdiComponent,
   FechaDialogComponent,
   PeriodoDialogComponent,
-  PeriodoPickerComponent
+  PeriodoPickerComponent,
+  SucursalFieldComponent
 ];
 
 export const entyComponents: any[] = [

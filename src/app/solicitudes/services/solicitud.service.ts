@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { catchError, shareReplay } from 'rxjs/operators';
 import * as _ from 'lodash';
@@ -115,5 +115,22 @@ export class SolicitudService {
   buscarDupicada(id: string): Observable<any> {
     const url = `${this.apiUrl}/buscarDuplicada/${id}`;
     return this.http.get<any>(url).shareReplay();
+  }
+
+  runReport(reportUrl: string, reportParams: {}) {
+    // console.log(`Reporte ${reportUrl} Params: `, reportParams);
+    const url = `${this.apiUrl}/${reportUrl}`;
+    let params = new HttpParams();
+    if (reportParams) {
+      _.forIn(reportParams, (value, key) => {
+        params = params.set(key, value.toString());
+      });
+    }
+    const headers = new HttpHeaders().set('Content-type', 'application/pdf');
+    return this.http.get(url, {
+      headers: headers,
+      params: params,
+      responseType: 'blob'
+    });
   }
 }
