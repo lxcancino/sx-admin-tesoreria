@@ -7,6 +7,7 @@ import { FormaDePagoComponent } from './forma-de-pago/forma-de-pago.component';
 import { UsoCfdiComponent } from './uso-cfdi/uso-cfdi.component';
 import { FechaDialogComponent } from './fecha-dilog/fecha.dialog.component';
 import { PeriodoDialogComponent } from './periodo-dialog/periodo-dialog.component';
+import { PeriodoPickerComponent } from './periodo-picker/periodo-picker.component';
 
 export const components = [
   DireccionComponent,
@@ -17,7 +18,8 @@ export const components = [
   FormaDePagoComponent,
   UsoCfdiComponent,
   FechaDialogComponent,
-  PeriodoDialogComponent
+  PeriodoDialogComponent,
+  PeriodoPickerComponent
 ];
 
 export const entyComponents: any[] = [
@@ -34,3 +36,4 @@ export * from './forma-de-pago/forma-de-pago.component';
 export * from './uso-cfdi/uso-cfdi.component';
 export * from './fecha-dilog/fecha.dialog.component';
 export * from './periodo-dialog/periodo-dialog.component';
+export * from './periodo-picker/periodo-picker.component';

@@ -1,10 +1,15 @@
-<mat-card>
-  <sx-search-title title="Depositos/Retiros">
-    <button mat-menu-item class="actions">
+<mat-card [style.height.vh]="85">
+  <sx-search-title title="Depositos/Retiros" (search)="search($event)">
+    <span class="info mat-subtitle pad-left">{{periodo}}</span>
+    <button mat-menu-item class="actions" (click)="load()">
       <mat-icon>refresh</mat-icon>Refrescar</button>
+    <sx-periodo-picker class="options" [periodo]="periodo" (change)="cambiarPeriodo($event)"></sx-periodo-picker>
   </sx-search-title>
   <mat-divider></mat-divider>
   <div *tdLoading="let movimientos until movimientos$ | async; type: 'circle'; color: 'accent'">
-    <sx-movimiento-tesoreria-table [data]="movimientos"></sx-movimiento-tesoreria-table>
+    <sx-movimiento-tesoreria-table [data]="movimientos" #table></sx-movimiento-tesoreria-table>
   </div>
 </mat-card>
+<a mat-fab color="accent" class="mat-fab-bottom-right" [routerLink]="['create']">
+  <mat-icon>add</mat-icon>
+</a>

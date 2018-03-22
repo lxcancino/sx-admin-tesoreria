@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {
   MovimientosTesoreriaComponent,
-  DepositosRetirosComponent
+  DepositosRetirosComponent,
+  DepositoRetiroCreateComponent
 } from './containers';
 
 const routes: Routes = [
@@ -10,7 +11,11 @@ const routes: Routes = [
     path: '',
     component: MovimientosTesoreriaComponent,
     children: [
-      { path: 'depositosRetiros', component: DepositosRetirosComponent }
+      { path: 'depositosRetiros', component: DepositosRetirosComponent },
+      {
+        path: 'depositosRetiros/create',
+        component: DepositoRetiroCreateComponent
+      }
     ]
   }
 ];

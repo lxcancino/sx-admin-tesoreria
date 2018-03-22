@@ -6,7 +6,8 @@ import {
   Output,
   EventEmitter,
   OnChanges,
-  ViewChild
+  ViewChild,
+  SimpleChanges
 } from '@angular/core';
 import { DatePipe, CurrencyPipe } from '@angular/common';
 import {
@@ -19,7 +20,8 @@ import {
 
 @Component({
   selector: 'sx-movimiento-tesoreria-table',
-  templateUrl: './movimiento-tesoreria-table.component.html'
+  templateUrl: './movimiento-tesoreria-table.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MovimientoTesoreriaTableComponent implements OnInit, OnChanges {
   columns: ITdDataTableColumn[] = [
@@ -46,14 +48,6 @@ export class MovimientoTesoreriaTableComponent implements OnInit, OnChanges {
       format: value => this.currencyPipe.transform(value, 'USD')
     },
     {
-      name: 'pagos',
-      label: 'Pagos',
-      numeric: true,
-      sortable: true,
-      filter: true,
-      format: value => this.currencyPipe.transform(value, 'USD')
-    },
-    {
       name: 'cuenta.descripcion',
       label: 'Cuenta',
       numeric: false,
@@ -65,10 +59,11 @@ export class MovimientoTesoreriaTableComponent implements OnInit, OnChanges {
 
   @Input() data: any[] = [];
   @Output() selection = new EventEmitter();
+  @Input() selectable = false;
 
-  filteredData: any[] = this.data;
-  filteredTotal: number = this.data.length;
-  selectable = true;
+  filteredData: any[] = [];
+  filteredTotal = 0;
+
   searchTerm = '';
   fromRow = 1;
   currentPage = 1;
@@ -83,16 +78,13 @@ export class MovimientoTesoreriaTableComponent implements OnInit, OnChanges {
     private _dataTableService: TdDataTableService
   ) {}
 
-  ngOnChanges(changes) {
-    if (changes.data) {
-      //  console.log('Detectando cambios: ', changes);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.data.currentValue !== null) {
       this.filter();
     }
   }
 
-  ngOnInit() {
-    this.filter();
-  }
+  ngOnInit() {}
 
   selectionChange() {
     this.selection.emit(this.selectedRows);
@@ -117,6 +109,9 @@ export class MovimientoTesoreriaTableComponent implements OnInit, OnChanges {
   }
 
   filter(): void {
+    if (this.data === null) {
+      return;
+    }
     let newData: any[] = this.data;
     const excludedColumns: string[] = this.columns
       .filter((column: ITdDataTableColumn) => {

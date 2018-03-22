@@ -15,6 +15,18 @@ export class Periodo {
     return new Periodo(f1.toDate(), f2.toDate());
   }
 
+  static fromJson(jsonString: string) {
+    try {
+      const data = JSON.parse(jsonString);
+      const f1 = moment(data.fechaInicial).toDate();
+      const f2 = moment(data.fechaFinal).toDate();
+      return new Periodo(f1, f2);
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+
   static monthToDay(): Periodo {
     const now = moment();
     const f1 = moment(now).startOf('month');

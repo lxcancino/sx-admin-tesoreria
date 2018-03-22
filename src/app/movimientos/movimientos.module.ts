@@ -8,10 +8,12 @@ import { SharedModule } from '../_shared/shared.module';
 import { containers } from './containers';
 // components
 import { components } from './components';
+// Services
+import { services } from './services';
 
 @NgModule({
   imports: [SharedModule, MovimientosRoutingModule],
   declarations: [...components, ...containers],
-  providers: [DatePipe, CurrencyPipe]
+  providers: [...services, DatePipe, CurrencyPipe]
 })
 export class MovimientosModule {}

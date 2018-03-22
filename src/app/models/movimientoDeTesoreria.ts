@@ -2,21 +2,22 @@ import { MovimientoDeCuenta } from './movimientoDeCuenta';
 import { CuentaDeBanco } from './cuentaDeBanco';
 
 export interface MovimientoDeTesoreria {
-  id: string;
-  folio: number;
+  id?: string;
+  folio?: number;
   fecha: string;
   concepto: ConceptoTesoreria;
   importe: number;
   cuenta: CuentaDeBanco;
-  movimiento: MovimientoDeCuenta;
+  movimiento?: MovimientoDeCuenta;
   comentario?: string;
-  creado: string;
-  modificado: string;
+  creado?: string;
+  modificado?: string;
 }
 
-export enum ConceptoTesoreria {
-  ACLARACION,
-  CONCILIACION,
-  FALTANTE,
-  SOBRANTE
-}
+export type ConceptoTesoreria =
+  | 'ACLARACION'
+  | 'CONCILIACION'
+  | 'FALTANTE'
+  | 'SOBRANTE';
+
+export const CONCEPTOS = ['ACLARACION', 'CONCILIACION', 'FALTANTE', 'SOBRANTE'];

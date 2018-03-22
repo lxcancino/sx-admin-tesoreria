@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { Periodo } from 'app/_core/models/periodo';
 import { MovimientoDeTesoreria } from '../../../models/movimientoDeTesoreria';
+import { MovimientosDeTesoreriaService } from '../../services';
 
 @Component({
   selector: 'sx-depositos-retiros',
@@ -11,15 +12,27 @@ import { MovimientoDeTesoreria } from '../../../models/movimientoDeTesoreria';
 export class DepositosRetirosComponent implements OnInit {
   periodo: Periodo = Periodo.monthToDay();
   movimientos$: Observable<MovimientoDeTesoreria[]>;
+  private localKey = 'sx.tesoreria.movimientos.depositos-retiros';
 
-  constructor() {}
+  constructor(private service: MovimientosDeTesoreriaService) {}
 
   ngOnInit() {
-    console.log('Periodo: ', this.periodo.toJson());
-    const js = {
-      fechaInicial: this.periodo.fechaInicial.toISOString(),
-      fechaFinal: this.periodo.fechaFinal.toISOString()
-    };
-    console.log('Per as json: ', js);
+    const pp = Periodo.fromJson(localStorage.getItem(this.localKey));
+    if (pp !== null) {
+      this.periodo = pp;
+    }
+    this.load();
+  }
+
+  load() {
+    this.movimientos$ = this.service.list({ periodo: this.periodo });
+    this.movimientos$.subscribe(data => console.log(data));
+  }
+
+  search(term: string) {}
+
+  cambiarPeriodo(periodo: Periodo) {
+    console.log('Nuevo periodo: ', periodo);
+    localStorage.setItem(this.localKey, periodo.toJson());
   }
 }
