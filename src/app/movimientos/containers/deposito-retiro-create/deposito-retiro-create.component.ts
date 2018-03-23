@@ -30,13 +30,13 @@ export class DepositoRetiroCreateComponent implements OnInit {
   }
 
   onSave(movimiento: MovimientoDeTesoreria) {
-    console.log('Salvando movimiento: ', movimiento);
+    // console.log('Salvando movimiento: ', movimiento);
     this.loadingService.register('');
     this.service
       .save(movimiento)
       .pipe(finalize(() => this.loadingService.resolve('')))
       .subscribe(res => {
-        console.log('Saved: ', res);
+        this.router.navigate(['movimientos/depositosRetiros']);
       });
   }
 

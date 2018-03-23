@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { TdDialogService } from '@covalent/core';
 
 import { Periodo } from 'app/_core/models/periodo';
 import { MovimientoDeTesoreria } from '../../../models/movimientoDeTesoreria';
@@ -14,25 +15,53 @@ export class DepositosRetirosComponent implements OnInit {
   movimientos$: Observable<MovimientoDeTesoreria[]>;
   private localKey = 'sx.tesoreria.movimientos.depositos-retiros';
 
-  constructor(private service: MovimientosDeTesoreriaService) {}
+  @ViewChild('table') table;
+
+  constructor(
+    private service: MovimientosDeTesoreriaService,
+    private dialogService: TdDialogService
+  ) {}
 
   ngOnInit() {
     const pp = Periodo.fromJson(localStorage.getItem(this.localKey));
     if (pp !== null) {
       this.periodo = pp;
+    } else {
+      this.periodo = Periodo.monthToDay();
+      localStorage.setItem(this.localKey, this.periodo.toJson());
     }
     this.load();
   }
 
   load() {
     this.movimientos$ = this.service.list({ periodo: this.periodo });
-    this.movimientos$.subscribe(data => console.log(data));
   }
 
-  search(term: string) {}
+  search(term: string) {
+    this.table.search(term);
+  }
 
   cambiarPeriodo(periodo: Periodo) {
-    console.log('Nuevo periodo: ', periodo);
     localStorage.setItem(this.localKey, periodo.toJson());
+  }
+
+  onSelect(movimiento: MovimientoDeTesoreria) {
+    console.log('Seleccionando movimiento: ', movimiento);
+  }
+
+  onDelete(movimiento: MovimientoDeTesoreria) {
+    this.dialogService
+      .openConfirm({
+        title: 'Deposito/Retiro',
+        message: 'Eliminar el movimiento: ' + movimiento.folio,
+        cancelButton: 'Cancelar',
+        acceptButton: 'Eliminar'
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.service.delete(movimiento.id).subscribe(res => this.load());
+        }
+      });
   }
 }

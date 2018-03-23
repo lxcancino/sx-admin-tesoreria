@@ -15,7 +15,8 @@ import {
   ITdDataTableColumn,
   TdDataTableService,
   ITdDataTableSortChangeEvent,
-  IPageChangeEvent
+  IPageChangeEvent,
+  TdDataTableComponent
 } from '@covalent/core';
 
 @Component({
@@ -36,30 +37,48 @@ export class MovimientoTesoreriaTableComponent implements OnInit, OnChanges {
     {
       name: 'fecha',
       label: 'Fecha',
+      width: 120,
       format: date => this.datePipe.transform(date, 'dd/MM/yyyy')
     },
-    { name: 'concepto', label: 'Concepto', sortable: true, width: 120 },
+    {
+      name: 'concepto',
+      label: 'Concepto',
+      sortable: true,
+      filter: true,
+      width: 120
+    },
     {
       name: 'importe',
       label: 'Importe',
       numeric: true,
       sortable: true,
       filter: true,
+      width: 150,
       format: value => this.currencyPipe.transform(value, 'USD')
     },
     {
-      name: 'cuenta.descripcion',
+      name: 'banco',
       label: 'Cuenta',
       numeric: false,
       sortable: true,
       filter: true,
-      nested: true
+      width: 450
+      // format: value => value.descripcion
+    },
+    {
+      name: 'delete',
+      label: '',
+      width: 100
     }
   ];
 
   @Input() data: any[] = [];
   @Output() selection = new EventEmitter();
+  @Output() select = new EventEmitter();
+  @Output() delete = new EventEmitter();
   @Input() selectable = false;
+
+  @ViewChild(TdDataTableComponent) table;
 
   filteredData: any[] = [];
   filteredTotal = 0;
@@ -112,6 +131,7 @@ export class MovimientoTesoreriaTableComponent implements OnInit, OnChanges {
     if (this.data === null) {
       return;
     }
+
     let newData: any[] = this.data;
     const excludedColumns: string[] = this.columns
       .filter((column: ITdDataTableColumn) => {
@@ -141,5 +161,6 @@ export class MovimientoTesoreriaTableComponent implements OnInit, OnChanges {
       this.currentPage * this.pageSize
     );
     this.filteredData = newData;
+    this.table.refresh();
   }
 }

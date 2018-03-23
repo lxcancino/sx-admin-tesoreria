@@ -37,7 +37,7 @@
       <mat-datepicker #picker2></mat-datepicker>
     </mat-form-field>
   </div>
-  <ng-template tdLoading [tdLoadingUntil]="!procesando" tdLoadingStrategy="overlay" tdLoadingType="linear" flex>
+  <ng-template tdLoading [tdLoadingUntil]="!procesando" tdLoadingStrategy="overlay" flex>
     <div layout class="table-panel">
       <td-data-table [data]="solicitudes$ | async" [columns]="columns" class="table" [selectable]="true" [(ngModel)]="selectedRows"
         (selectAll)="selectionChange()" (rowSelect)="selectionChange()" flex>

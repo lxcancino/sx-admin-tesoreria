@@ -51,10 +51,12 @@ export class MovimientosDeTesoreriaService {
       .set('fecha', fecha.toISOString());
     const headers = new HttpHeaders().set('Content-type', 'application/pdf');
     const url = `${this.apiUrl}/reporteDeComisionesTarjeta`;
-    return this.http.get(url, {
-      headers: headers,
-      params: params,
-      responseType: 'blob'
-    });
+    return this.http
+      .get(url, {
+        headers: headers,
+        params: params,
+        responseType: 'blob'
+      })
+      .pipe(catchError(err => Observable.of(err)));
   }
 }

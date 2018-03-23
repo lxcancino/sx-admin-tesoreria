@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 import { SolicitudDeDeposito } from '../../models';
 import { SolicitudService } from '../../services';
 import { PagosUtils } from 'app/_core/services/pagos-utils.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'sx-solicitudes-autorizadas',
@@ -108,7 +109,7 @@ export class SolicitudesAutorizadasComponent implements OnInit {
   }
 
   selectionChange() {
-    console.log('Selection: ', this.selectedRows);
+    // console.log('Selection: ', this.selectedRows);
   }
 
   search(data) {}
@@ -162,7 +163,30 @@ export class SolicitudesAutorizadasComponent implements OnInit {
   registrarBatch() {
     const sols = this.selectedRows.filter(row => row.cobro.ingreso === null);
     if (sols.length > 0) {
-      console.log('Registrando ingreso de :', sols);
+      // console.log('Registrando ingreso de :', sols);
+      this.dialogService
+        .openConfirm({
+          title: 'Registro de tesorería',
+          message: `Registrar ${sols.length} cobros en Tesorería`,
+          acceptButton: 'Aceptar',
+          cancelButton: 'Cancelar'
+        })
+        .afterClosed()
+        .subscribe(res => {
+          if (res) {
+            const ingresos = [];
+            _.forEach(sols, item => {
+              ingresos.push(this.service.ingreso(item.id));
+            });
+            this.procesando = true;
+
+            Observable.concat(...ingresos)
+              .pipe(finalize(() => (this.procesando = false)))
+              .subscribe(res => {
+                this.load();
+              });
+          }
+        });
     }
   }
 

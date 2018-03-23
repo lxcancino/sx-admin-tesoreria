@@ -22,7 +22,7 @@ export class Periodo {
       const f2 = moment(data.fechaFinal).toDate();
       return new Periodo(f1, f2);
     } catch (error) {
-      console.error(error);
+      // console.log(error);
       return null;
     }
   }
