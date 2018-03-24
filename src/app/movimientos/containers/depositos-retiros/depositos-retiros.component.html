@@ -1,7 +1,7 @@
 <mat-card>
   <sx-search-title title="Depositos/Retiros" (search)="search($event)">
     <span class="info mat-subtitle pad-left">{{periodo}}</span>
-    <button mat-menu-item class="actions" (click)="load()" [style.text-align]="center">
+    <button mat-menu-item class="actions" (click)="load()">
       <mat-icon>refresh</mat-icon>Refrescar</button>
     <sx-periodo-picker class="options" [periodo]="periodo" (change)="cambiarPeriodo($event)"></sx-periodo-picker>
   </sx-search-title>

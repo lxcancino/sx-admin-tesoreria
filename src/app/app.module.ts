@@ -3,8 +3,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
+import {
+  StoreRouterConnectingModule,
+  RouterStateSerializer
+} from '@ngrx/router-store';
 import { StoreModule, MetaReducer } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+
+import { reducers, CustomSerializer } from './store';
 
 // Not used in production
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -36,7 +42,6 @@ export function onAppInit(configService: ConfigService): () => Promise<any> {
 }
 
 @NgModule({
-  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -44,12 +49,13 @@ export function onAppInit(configService: ConfigService): () => Promise<any> {
     AppRoutingModule,
 
     // Ngrx Store configuration
-    StoreModule.forRoot({}, { metaReducers }),
+    StoreModule.forRoot(reducers, { metaReducers }),
     StoreDevtoolsModule.instrument({
-      name: 'SX-CXC Dev Tools',
+      name: 'SX-Tesoreria Dev Tools',
       logOnly: environment.production
     }),
     EffectsModule.forRoot([]),
+    StoreRouterConnectingModule,
 
     SharedModule,
     CoreModule,
@@ -63,8 +69,10 @@ export function onAppInit(configService: ConfigService): () => Promise<any> {
       multi: true,
       deps: [ConfigService]
     },
-    { provide: MAT_DATE_LOCALE, useValue: 'es-MX' }
+    { provide: MAT_DATE_LOCALE, useValue: 'es-MX' },
+    { provide: RouterStateSerializer, useClass: CustomSerializer }
   ],
+  declarations: [AppComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
