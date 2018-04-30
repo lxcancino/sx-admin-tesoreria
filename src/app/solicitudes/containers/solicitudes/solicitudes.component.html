@@ -35,7 +35,22 @@
       <p matLine> Cobranza COD </p>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>
+
+    <mat-list-item (click)="disponibles()">
+      <mat-icon matListAvatar>insert_chart</mat-icon>
+      <h3 matLine> Disponibles </h3>
+    </mat-list-item>
+    <mat-divider [inset]="true"></mat-divider>
+
+    <mat-list-item (click)="ventasDiarias()">
+      <mat-icon matListAvatar>insert_chart</mat-icon>
+      <h3 matLine> Ventas diarias </h3>
+    </mat-list-item>
+    <mat-divider [inset]="true"></mat-divider>
+
   </mat-nav-list>
+
+
 
   <div tdMediaToggle="gt-xs" [mediaClasses]="['push-sm']">
     <router-outlet></router-outlet>

@@ -6,6 +6,8 @@ import {
   FacturasCobradasComponent,
   CobranzaCodComponent
 } from '../../components';
+import { DisponiblesDialogComponent } from '../../components/disponibes-dialog/disponibles-dialog.component';
+import { VentasDiariasDialogComponent } from '../../components/ventas-diarias-dialog/ventas-diarias-dialog.component';
 
 @Component({
   selector: 'sx-solicitudes',
@@ -74,6 +76,37 @@ export class SolicitudesComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.service.runReport('cobranzaCod', result).subscribe(res => {
+          const blob = new Blob([res], {
+            type: 'application/pdf'
+          });
+          const fileURL = window.URL.createObjectURL(blob);
+          window.open(fileURL, '_blank');
+        });
+      }
+    });
+  }
+
+  disponibles() {
+    const dialogRef = this.dialog.open(DisponiblesDialogComponent, {});
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.service.runReport('disponibles', result).subscribe(res => {
+          const blob = new Blob([res], {
+            type: 'application/pdf'
+          });
+          const fileURL = window.URL.createObjectURL(blob);
+          window.open(fileURL, '_blank');
+        });
+      }
+    });
+  }
+
+  ventasDiarias() {
+    const dialogRef = this.dialog.open(VentasDiariasDialogComponent, {});
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.service.runReport('ventasDiarias', result).subscribe(res => {
           const blob = new Blob([res], {
             type: 'application/pdf'
           });
