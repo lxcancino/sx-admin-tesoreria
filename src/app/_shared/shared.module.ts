@@ -9,6 +9,7 @@ import { CovalentModule } from './_covalent/covalent.module';
 import { components, entyComponents } from './components';
 // Directives
 import { directives } from './directives';
+import { MAT_DATE_LOCALE } from '@angular/material';
 
 @NgModule({
   imports: [
@@ -29,6 +30,7 @@ import { directives } from './directives';
     ...directives
   ],
   declarations: [...components, ...directives],
-  entryComponents: [...entyComponents]
+  entryComponents: [...entyComponents],
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'es-MX' }]
 })
 export class SharedModule {}
