@@ -10,13 +10,24 @@ import { catchError, finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'sx-cobros',
-  templateUrl: './cobros.component.html'
+  templateUrl: './cobros.component.html',
+  styles: [
+    `
+    .cobros-table-container {
+      max-height: 650px;
+      overflow: auto;
+    }
+  `
+  ]
 })
 export class CobrosComponent implements OnInit, OnDestroy {
   cobros$: Observable<Cobro[]>;
   term = '';
   procesando = false;
   _fecha: Date;
+  _fecha2: Date;
+  _importe: number;
+
   // filter: { fecha?: Date; term?: string } = {};
 
   constructor(
@@ -47,6 +58,12 @@ export class CobrosComponent implements OnInit, OnDestroy {
     if (this.fecha) {
       fil.fecha = this.fecha.toISOString();
     }
+    if (this.fecha2) {
+      fil.fechaFin = this.fecha2.toISOString();
+    }
+    if (this.importe) {
+      fil.importe = this.importe;
+    }
     this.cobros$ = this.servie
       .cobrosMonetarios(fil)
       .pipe(
@@ -73,6 +90,24 @@ export class CobrosComponent implements OnInit, OnDestroy {
   }
   set fecha(val: Date) {
     this._fecha = val;
+    this.load();
+  }
+
+  get fecha2() {
+    return this._fecha2;
+  }
+  set fecha2(val: Date) {
+    this._fecha2 = val;
+    this.load();
+  }
+
+  get importe() {
+    return this._importe;
+  }
+
+  set importe(monto: number) {
+    this._importe = monto;
+    console.log('Importe: ', this.importe);
     this.load();
   }
 }

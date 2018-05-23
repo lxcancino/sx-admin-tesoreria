@@ -12,7 +12,10 @@ import { catchError, finalize } from 'rxjs/operators';
     <div>
     <ng-template tdLoading [tdLoadingUntil]="!procesando" tdLoadingStrategy="overlay" >
     <ng-container *ngIf="cobro$ | async as cobro">
-        <sx-cobro-form [cobro]="cobro" (delete)="onDelete($event)" (cancel)="onCancel($event)"></sx-cobro-form>
+        <sx-cobro-form [cobro]="cobro" (delete)="onDelete($event)"
+          (cancel)="onCancel($event)"
+          (chequeDevuelto)="onChequeDevuelto($event)">
+        </sx-cobro-form>
       </ng-container>
     </ng-template>
 
@@ -53,6 +56,31 @@ export class CobroEditComponent implements OnInit {
           this.procesando = true;
           this.service
             .delete(cobro.id)
+            .pipe(
+              catchError(err => Observable.of(err)),
+              finalize(() => (this.procesando = false))
+            )
+            .subscribe(data => {
+              this.router.navigate(['/ingresos/cobros']);
+            });
+        }
+      });
+  }
+
+  onChequeDevuelto(cobro: Cobro) {
+    this.dialogServie
+      .openConfirm({
+        title: 'Registrar como cheque devuelto ?',
+        message: 'Cobro por: ' + cobro.importe,
+        acceptButton: 'Aceptar',
+        cancelButton: 'Cancelar'
+      })
+      .afterClosed()
+      .subscribe(res => {
+        if (res) {
+          this.procesando = true;
+          this.service
+            .registrarChequeDevuelto(cobro)
             .pipe(
               catchError(err => Observable.of(err)),
               finalize(() => (this.procesando = false))

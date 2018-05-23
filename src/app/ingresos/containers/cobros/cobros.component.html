@@ -2,9 +2,18 @@
   <sx-search-title title="Cobros registrados" (search)=onSearch($event)>
     <ng-container class="options">
       <mat-form-field>
-        <input matInput [matDatepicker]="picker" placeholder="Fecha" [(ngModel)]="fecha">
+        <input matInput [matDatepicker]="picker" placeholder="Fecha Ini" [(ngModel)]="fecha">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="pad-left pad-right">
+        <input matInput [matDatepicker]="picker2" placeholder="Fecha fin" [(ngModel)]="fecha2">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="pad-left pad-right">
+        <input matInput placeholder="Importe" [(ngModel)]="importe" [ngModelOptions]="{updateOn: 'blur'}" type="number">
+        <span matPrefix>$&nbsp;</span>
       </mat-form-field>
     </ng-container>
 
@@ -15,7 +24,7 @@
       <mat-icon>add</mat-icon> Agregar
     </button>
   </sx-search-title>
-  <div>
+  <div class="cobros-table-container">
     <ng-template tdLoading [tdLoadingUntil]="!procesando" tdLoadingStrategy="overlay">
       <sx-cobros-table [cobros]="cobros$ | async" (select)="onSelect($event)"></sx-cobros-table>
     </ng-template>

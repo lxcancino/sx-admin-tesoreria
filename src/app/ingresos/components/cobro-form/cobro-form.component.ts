@@ -37,6 +37,7 @@ export class CobroFormComponent implements OnInit, OnChanges, OnDestroy {
 
   @Output() save = new EventEmitter();
   @Output() delete = new EventEmitter();
+  @Output() chequeDevuelto = new EventEmitter();
 
   @Input() cobro: Cobro;
 

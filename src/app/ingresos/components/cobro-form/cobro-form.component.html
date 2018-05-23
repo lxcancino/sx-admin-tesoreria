@@ -12,7 +12,7 @@
   <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
     <div layout="column" class="pad-left pad-right">
       <div layout flex>
-        <sx-cliente-field formControlName="cliente" flex></sx-cliente-field>
+        <sx-cliente-field formControlName="cliente" flex tipo="TODOS"></sx-cliente-field>
         <mat-form-field class="pad-left">
           <mat-select placeholder="Cartera" formControlName="tipo">
             <mat-option *ngFor="let tipo of ['CRE','JUR','CHE']" [value]="tipo">
@@ -77,6 +77,9 @@
       <button type="button" mat-button (click)="cancel.emit('cancel')"> Cancelar</button>
       <button type="button" mat-button (click)="delete.emit(cobro)" *ngIf="cobro && isEditable()" color="warn">
         <mat-icon>delete</mat-icon>Eliminar
+      </button>
+      <button type="button" mat-button (click)="chequeDevuelto.emit(cobro)" *ngIf="cobro?.formaDePago === 'CHEQUE'" color="warn">
+        <mat-icon>info</mat-icon>Cheque Devuelto
       </button>
     </mat-card-actions>
   </form>

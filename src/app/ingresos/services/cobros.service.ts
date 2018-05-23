@@ -69,6 +69,11 @@ export class CobrosService {
     return this.http.delete(url);
   }
 
+  registrarChequeDevuelto(com: Cobro): Observable<Cobro> {
+    const url = `${this.apiUrl}/registrarChequeDevuelto/${com.id}`;
+    return this.http.put<Cobro>(url, com);
+  }
+
   sucursales(): Observable<any> {
     const params = new HttpParams().set('activas', 'activas');
     const url = this.config.buildApiUrl('sucursales');

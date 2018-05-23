@@ -15,7 +15,7 @@ import { PagosUtils } from '../../../_core/services/pagos-utils.service';
 @Component({
   selector: 'sx-cobros-table',
   template: `
-    <td-data-table [data]="cobros" [columns]="columns">
+    <td-data-table [data]="cobros" [columns]="columns" [selectable]="true" >
       <ng-template tdDataTableTemplate="tipo" let-value="value" let-row="row" >
         <span (click)="select.emit(row)" class="cursor-pointer" flex>{{value}}</span>
       </ng-template>
@@ -32,8 +32,9 @@ import { PagosUtils } from '../../../_core/services/pagos-utils.service';
 
       <ng-template tdDataTableTemplate="referencia" let-value="value" let-row="row" >
         <span layout="column" >
+          <span  *ngIf="row.cheque " class="text-md">{{row.bancoOrigen}}</span>
+
           <span>{{value}}</span>
-          <span  *ngIf="row.cheque ">{{row.bancoOrigen}}</span>
         </span>
       </ng-template>
 
@@ -62,6 +63,10 @@ export class CobrosTableComponent implements OnInit {
       sortable: true,
       numeric: false,
       nested: true
+    },
+    {
+      name: 'comentario',
+      label: 'Comentario'
     },
     {
       name: 'formaDePago',
