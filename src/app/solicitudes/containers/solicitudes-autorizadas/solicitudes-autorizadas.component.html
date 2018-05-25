@@ -23,9 +23,7 @@
     <td-search-input placeholder="Sucursal" showUnderline="true" (searchDebounce)="searchSucursal($event)" class="pad-right"></td-search-input>
     <td-search-input placeholder="Folio" showUnderline="true" (searchDebounce)="searchFolio($event)" class="pad-right"></td-search-input>
     <td-search-input placeholder="Cliente" showUnderline="true" (searchDebounce)="searchCliente($event)" flex class="pad-right"></td-search-input>
-    <td-search-input type="number" placeholder="Total" showUnderline="true" (searchDebounce)="searchTotal($event)" class="pad-right"></td-search-input>
-    <td-search-input placeholder="Banco destino" showUnderline="true" (searchDebounce)="searchBanco($event)" class="pad-right">
-    </td-search-input>
+
     <mat-form-field>
       <input matInput [matDatepicker]="picker" placeholder="Fecha deposito" (dateChange)="searchFecha($event.value)">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -37,6 +35,13 @@
       <mat-datepicker #picker2></mat-datepicker>
     </mat-form-field>
   </div>
+  <div layout layout-align="start center" class="filter-panel pad-left-sm pad-right-sm">
+    <td-search-input type="number" placeholder="Total" showUnderline="true" (searchDebounce)="searchTotal($event)" class="pad-right"></td-search-input>
+    <td-search-input placeholder="Forma de pago" showUnderline="true" (searchDebounce)="searchFormaDePago($event)" class="pad-right"></td-search-input>
+    <td-search-input placeholder="Banco destino" showUnderline="true" (searchDebounce)="searchBanco($event)" class="pad-right">
+    </td-search-input>
+  </div>
+
   <ng-template tdLoading [tdLoadingUntil]="!procesando" tdLoadingStrategy="overlay" flex>
     <div layout class="table-panel">
       <td-data-table [data]="solicitudes$ | async" [columns]="columns" class="table" [selectable]="true" [(ngModel)]="selectedRows"

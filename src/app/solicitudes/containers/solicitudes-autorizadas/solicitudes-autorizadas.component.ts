@@ -57,6 +57,7 @@ export class SolicitudesAutorizadasComponent implements OnInit {
     fechaDeposito?: string;
     fechaCobranza?: string;
     banco?: string;
+    formaDePago?: string;
   } = {};
 
   constructor(
@@ -148,6 +149,11 @@ export class SolicitudesAutorizadasComponent implements OnInit {
   }
   searchBanco(banco) {
     this.filter.banco = banco;
+    this.load();
+  }
+
+  searchFormaDePago(fp) {
+    this.filter.formaDePago = fp;
     this.load();
   }
 
