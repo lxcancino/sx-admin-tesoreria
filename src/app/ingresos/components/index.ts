@@ -15,6 +15,7 @@ import { RelacionPagosComponent } from './relacionPagos/relacion-pagos.component
 import { GenerarFichaComponent } from './generar-ficha/generar-ficha.component';
 import { FichaInfoComponent } from './ficha-info/ficha-info.component';
 import { RelacionFichasComponent } from './relacionFichas/relacion-fichas.component';
+import { ChequeDevueltoDialogComponent } from './cheque-devuelto-dialog/cheque-devuelto-dialog.component';
 
 export const components: any[] = [
   CobrosTableComponent,
@@ -33,7 +34,8 @@ export const components: any[] = [
   RelacionPagosComponent,
   GenerarFichaComponent,
   FichaInfoComponent,
-  RelacionFichasComponent
+  RelacionFichasComponent,
+  ChequeDevueltoDialogComponent
 ];
 export const entryComponents: any[] = [
   FacturasSelectorComponent,
@@ -42,7 +44,8 @@ export const entryComponents: any[] = [
   RelacionPagosComponent,
   GenerarFichaComponent,
   FichaInfoComponent,
-  RelacionFichasComponent
+  RelacionFichasComponent,
+  ChequeDevueltoDialogComponent
 ];
 
 export * from './cobros-table/cobros-table.component';
@@ -62,3 +65,4 @@ export * from './relacionPagos/relacion-pagos.component';
 export * from './generar-ficha/generar-ficha.component';
 export * from './ficha-info/ficha-info.component';
 export * from './relacionFichas/relacion-fichas.component';
+export * from './cheque-devuelto-dialog/cheque-devuelto-dialog.component';

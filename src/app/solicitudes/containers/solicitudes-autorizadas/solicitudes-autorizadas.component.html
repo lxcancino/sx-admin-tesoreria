@@ -40,6 +40,8 @@
     <td-search-input placeholder="Forma de pago" showUnderline="true" (searchDebounce)="searchFormaDePago($event)" class="pad-right"></td-search-input>
     <td-search-input placeholder="Banco destino" showUnderline="true" (searchDebounce)="searchBanco($event)" class="pad-right">
     </td-search-input>
+    <td-search-input placeholder="Tipo" showUnderline="true" (searchDebounce)="searchTipo($event)" class="pad-right">
+    </td-search-input>
   </div>
 
   <ng-template tdLoading [tdLoadingUntil]="!procesando" tdLoadingStrategy="overlay" flex>

@@ -14,7 +14,7 @@ import { catchError, finalize } from 'rxjs/operators';
   styles: [
     `
     .cobros-table-container {
-      max-height: 650px;
+      height: 650px;
       overflow: auto;
     }
   `

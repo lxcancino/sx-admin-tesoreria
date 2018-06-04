@@ -4,18 +4,26 @@ import {
   Input,
   Output,
   EventEmitter,
-  ChangeDetectionStrategy
+  ChangeDetectionStrategy,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
 import { DatePipe, CurrencyPipe } from '@angular/common';
-import { ITdDataTableColumn } from '@covalent/core';
+import {
+  ITdDataTableColumn,
+  ITdDataTableSortChangeEvent,
+  TdDataTableSortingOrder,
+  TdDataTableService
+} from '@covalent/core';
 
 import { Cobro } from '../../models/cobro';
-import { PagosUtils } from '../../../_core/services/pagos-utils.service';
+import { PagosUtils } from 'app/_core/services/pagos-utils.service';
 
 @Component({
   selector: 'sx-cobros-table',
   template: `
-    <td-data-table [data]="cobros" [columns]="columns" [selectable]="true" >
+    <td-data-table [data]="filteredData" [columns]="columns" [selectable]="true" [style.height.px]="500"
+    [sortable]="true" (sortChange)="sort($event)">
       <ng-template tdDataTableTemplate="tipo" let-value="value" let-row="row" >
         <span (click)="select.emit(row)" class="cursor-pointer" flex>{{value}}</span>
       </ng-template>
@@ -27,6 +35,12 @@ import { PagosUtils } from '../../../_core/services/pagos-utils.service';
       <ng-template tdDataTableTemplate="disponible" let-value="value" let-row="row" >
         <span (click)="select.emit(row)" class="cursor-pointer" [ngClass]="{'tc-indigo-800':value > 0}" flex>
           {{value | currency: 'USD': 1.2-2}}
+        </span>
+      </ng-template>
+      <ng-template tdDataTableTemplate="comentario" let-value="value" let-row="row" >
+        <span layout="column" class="text-md">
+          <span *ngIf="value">{{value}}</span>
+          <span >{{row.sucursal.nombre}}</span>
         </span>
       </ng-template>
 
@@ -44,10 +58,7 @@ import { PagosUtils } from '../../../_core/services/pagos-utils.service';
   providers: [DatePipe, CurrencyPipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CobrosTableComponent implements OnInit {
-  @Input() cobros: Cobro[] = [];
-  @Output() select = new EventEmitter<Cobro>();
-
+export class CobrosTableComponent implements OnInit, OnChanges {
   columns: ITdDataTableColumn[] = [
     { name: 'tipo', label: 'Tipo', numeric: false, width: 70 },
     {
@@ -66,7 +77,8 @@ export class CobrosTableComponent implements OnInit {
     },
     {
       name: 'comentario',
-      label: 'Comentario'
+      label: 'Comentario',
+      width: 250
     },
     {
       name: 'formaDePago',
@@ -103,11 +115,41 @@ export class CobrosTableComponent implements OnInit {
     }
   ];
 
+  @Input() cobros: Cobro[] = [];
+  @Output() select = new EventEmitter<Cobro>();
+
+  filteredData = this.cobros;
+  sortBy = '';
+  sortOrder: TdDataTableSortingOrder = TdDataTableSortingOrder.Descending;
+
   constructor(
     private datePipe: DatePipe,
     private currencyPipe: CurrencyPipe,
-    private pagosUtils: PagosUtils
+    private pagosUtils: PagosUtils,
+    private _dataTableService: TdDataTableService
   ) {}
 
   ngOnInit() {}
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.cobros && changes.cobros.currentValue) {
+      this.filteredData = changes.cobros.currentValue;
+      this.filter();
+    }
+  }
+
+  sort(sortEvent: ITdDataTableSortChangeEvent): void {
+    this.sortBy = sortEvent.name;
+    this.sortOrder = sortEvent.order;
+    this.filter();
+  }
+  filter() {
+    let newData: any[] = this.cobros;
+    newData = this._dataTableService.sortData(
+      newData,
+      this.sortBy,
+      this.sortOrder
+    );
+    this.filteredData = newData;
+  }
 }

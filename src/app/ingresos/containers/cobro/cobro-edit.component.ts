@@ -5,6 +5,8 @@ import { Cobro } from '../../models/cobro';
 import { CobrosService } from '../../services';
 import { TdDialogService } from '@covalent/core';
 import { catchError, finalize } from 'rxjs/operators';
+import { MatDialog } from '@angular/material';
+import { ChequeDevueltoDialogComponent } from '../../components';
 
 @Component({
   selector: 'sx-cobro-edit',
@@ -29,7 +31,8 @@ export class CobroEditComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private service: CobrosService,
-    private dialogServie: TdDialogService
+    private dialogServie: TdDialogService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -68,6 +71,26 @@ export class CobroEditComponent implements OnInit {
   }
 
   onChequeDevuelto(cobro: Cobro) {
+    this.dialog
+      .open(ChequeDevueltoDialogComponent, {})
+      .afterClosed()
+      .subscribe((fecha: Date) => {
+        if (fecha) {
+          this.procesando = true;
+          this.service
+            .registrarChequeDevuelto(fecha, cobro)
+            .pipe(
+              catchError(err => Observable.of(err)),
+              finalize(() => (this.procesando = false))
+            )
+            .subscribe(data => {
+              this.router.navigate(['/ingresos/cobros']);
+            });
+        }
+      });
+  }
+
+  onChequeDevuelto2(cobro: Cobro) {
     this.dialogServie
       .openConfirm({
         title: 'Registrar como cheque devuelto ?',
@@ -80,7 +103,7 @@ export class CobroEditComponent implements OnInit {
         if (res) {
           this.procesando = true;
           this.service
-            .registrarChequeDevuelto(cobro)
+            .registrarChequeDevuelto(new Date(), cobro)
             .pipe(
               catchError(err => Observable.of(err)),
               finalize(() => (this.procesando = false))

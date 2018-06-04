@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import * as _ from 'lodash';
+import * as moment from 'moment';
 
 import { ConfigService } from '../../utils/config.service';
 import { Cobro } from '../models/cobro';
@@ -69,9 +70,13 @@ export class CobrosService {
     return this.http.delete(url);
   }
 
-  registrarChequeDevuelto(com: Cobro): Observable<Cobro> {
+  registrarChequeDevuelto(fecha: Date, com: Cobro): Observable<Cobro> {
     const url = `${this.apiUrl}/registrarChequeDevuelto/${com.id}`;
-    return this.http.put<Cobro>(url, com);
+    const params = new HttpParams().set(
+      'fecha',
+      moment(fecha).format('DD/MM/YYYY')
+    );
+    return this.http.put<Cobro>(url, {}, { params: params });
   }
 
   sucursales(): Observable<any> {

@@ -31,6 +31,7 @@ export class SolicitudesAutorizadasComponent implements OnInit {
     { name: 'sucursal', label: 'Sucursal', width: 120 },
     { name: 'cliente.nombre', label: 'Cliente', width: 300 },
     { name: 'fechaDeposito', label: 'Fecha D', width: 100 },
+    { name: 'cobro.tipo', label: 'Tipo', width: 150 },
     { name: 'cobro.formaDePago', label: 'F.P', width: 150 },
     { name: 'total', label: 'Total', width: 100 },
     { name: 'banco.nombre', label: 'Banco', width: 150 },
@@ -58,6 +59,7 @@ export class SolicitudesAutorizadasComponent implements OnInit {
     fechaCobranza?: string;
     banco?: string;
     formaDePago?: string;
+    tipo?: string;
   } = {};
 
   constructor(
@@ -154,6 +156,11 @@ export class SolicitudesAutorizadasComponent implements OnInit {
 
   searchFormaDePago(fp) {
     this.filter.formaDePago = fp;
+    this.load();
+  }
+
+  searchTipo(tipo) {
+    this.filter.tipo = tipo;
     this.load();
   }
 
