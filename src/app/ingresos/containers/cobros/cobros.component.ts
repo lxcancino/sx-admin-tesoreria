@@ -27,6 +27,7 @@ export class CobrosComponent implements OnInit, OnDestroy {
   _fecha: Date;
   _fecha2: Date;
   _importe: number;
+  _formaDePago: string;
 
   // filter: { fecha?: Date; term?: string } = {};
 
@@ -60,6 +61,9 @@ export class CobrosComponent implements OnInit, OnDestroy {
     }
     if (this.fecha2) {
       fil.fechaFin = this.fecha2.toISOString();
+    }
+    if (this.formaDePago) {
+      fil.formaDePago = this.formaDePago;
     }
     if (this.importe) {
       fil.importe = this.importe;
@@ -107,7 +111,14 @@ export class CobrosComponent implements OnInit, OnDestroy {
 
   set importe(monto: number) {
     this._importe = monto;
-    console.log('Importe: ', this.importe);
+    this.load();
+  }
+
+  get formaDePago() {
+    return this._formaDePago;
+  }
+  set formaDePago(value: string) {
+    this._formaDePago = value;
     this.load();
   }
 }

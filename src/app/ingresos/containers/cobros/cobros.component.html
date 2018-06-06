@@ -11,6 +11,11 @@
         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
         <mat-datepicker #picker2></mat-datepicker>
       </mat-form-field>
+
+      <mat-form-field>
+        <input matInput placeholder="Forma de pago" [(ngModel)]="formaDePago" [ngModelOptions]="{updateOn: 'blur'}">
+      </mat-form-field>
+
       <mat-form-field class="pad-left pad-right">
         <input matInput placeholder="Importe" [(ngModel)]="importe" [ngModelOptions]="{updateOn: 'blur'}" type="number">
         <span matPrefix>$&nbsp;</span>
