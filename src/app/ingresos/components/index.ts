@@ -16,6 +16,7 @@ import { GenerarFichaComponent } from './generar-ficha/generar-ficha.component';
 import { FichaInfoComponent } from './ficha-info/ficha-info.component';
 import { RelacionFichasComponent } from './relacionFichas/relacion-fichas.component';
 import { ChequeDevueltoDialogComponent } from './cheque-devuelto-dialog/cheque-devuelto-dialog.component';
+import { ChequeDevueltosTableComponent } from './cheque-devueltos-table/cheque-devueltos-table.component';
 
 export const components: any[] = [
   CobrosTableComponent,
@@ -35,7 +36,8 @@ export const components: any[] = [
   GenerarFichaComponent,
   FichaInfoComponent,
   RelacionFichasComponent,
-  ChequeDevueltoDialogComponent
+  ChequeDevueltoDialogComponent,
+  ChequeDevueltosTableComponent
 ];
 export const entryComponents: any[] = [
   FacturasSelectorComponent,
@@ -66,3 +68,4 @@ export * from './generar-ficha/generar-ficha.component';
 export * from './ficha-info/ficha-info.component';
 export * from './relacionFichas/relacion-fichas.component';
 export * from './cheque-devuelto-dialog/cheque-devuelto-dialog.component';
+export * from './cheque-devueltos-table/cheque-devueltos-table.component';

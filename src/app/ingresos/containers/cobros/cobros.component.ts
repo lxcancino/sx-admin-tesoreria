@@ -39,18 +39,36 @@ export class CobrosComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     const filter = JSON.parse(localStorage.getItem('SX_TES_COBROS_FILTER'));
-    if (filter && filter.fecha) {
-      this.fecha = moment(filter.fecha).toDate();
+    if (filter) {
+      if (filter.fecha) {
+        this.fecha = moment(filter.fecha).toDate();
+      }
+      if (filter.fecha2) {
+        this.fecha2 = moment(filter.fecha2).toDate();
+      }
+      if (filter.formaDePago) {
+        this.formaDePago = filter.formaDePago;
+      }
     }
+
     this.load();
   }
 
   ngOnDestroy() {
-    const filter: any = { term: this.term };
+    const fil: any = { term: this.term };
     if (this.fecha) {
-      filter.fecha = this.fecha;
+      fil.fecha = this.fecha.toISOString();
     }
-    localStorage.setItem('SX_TES_COBROS_FILTER', JSON.stringify(filter));
+    if (this.fecha2) {
+      fil.fecha2 = this.fecha2.toISOString();
+    }
+    if (this.formaDePago) {
+      fil.formaDePago = this.formaDePago;
+    }
+    if (this.importe) {
+      fil.importe = this.importe;
+    }
+    localStorage.setItem('SX_TES_COBROS_FILTER', JSON.stringify(fil));
   }
 
   load() {

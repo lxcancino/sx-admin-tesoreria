@@ -1,0 +1,32 @@
+<mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+  <ng-container matColumnDef="nombre">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Cliente</mat-header-cell>
+    <mat-cell *matCellDef="let cxc">{{cxc.nombre}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="fecha">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</mat-header-cell>
+    <mat-cell *matCellDef="let cxc">{{cxc.fecha | date: 'dd/MM/yyyy'}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="total">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Importe</mat-header-cell>
+    <mat-cell *matCellDef="let cxc">{{cxc.total | currency}}</mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="recepcion">
+    <mat-header-cell *matHeaderCellDef mat-sort-header>Recepción</mat-header-cell>
+    <mat-cell *matCellDef="let cxc">
+      <span (click)="recepcion.emit(cxc)" class="cursor-pointer">{{cxc.recepcion | date: 'dd/MM/yyyy'}}</span>
+      <button mat-icon-button (click)="recepcion.emit(cxc)" *ngIf="!cxc.recepcion">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </mat-cell>
+  </ng-container>
+
+
+  <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+  <mat-row *matRowDef="let cxc; columns: columnsToDisplay"></mat-row>
+</mat-table>
+<mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true">
+</mat-paginator>

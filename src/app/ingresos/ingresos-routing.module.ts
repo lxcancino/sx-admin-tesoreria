@@ -21,6 +21,10 @@ const routes: Routes = [
         path: 'fichasContado',
         component: fromContainers.FichasComponent,
         data: { tipo: 'CONTADO' }
+      },
+      {
+        path: 'chequesDevueltos',
+        component: fromContainers.ChequesDevueltosComponent
       }
     ]
   }

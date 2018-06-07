@@ -2,18 +2,18 @@
   <sx-search-title title="Cobros registrados" (search)=onSearch($event)>
     <ng-container class="options">
       <mat-form-field>
-        <input matInput [matDatepicker]="picker" placeholder="Fecha Ini" [(ngModel)]="fecha">
+        <input matInput [matDatepicker]="picker" placeholder="Fecha Ini" [(ngModel)]="fecha" autocomplete="off">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
       <mat-form-field class="pad-left pad-right">
-        <input matInput [matDatepicker]="picker2" placeholder="Fecha fin" [(ngModel)]="fecha2">
+        <input matInput [matDatepicker]="picker2" placeholder="Fecha fin" [(ngModel)]="fecha2" autocomplete="off">
         <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
         <mat-datepicker #picker2></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field>
-        <input matInput placeholder="Forma de pago" [(ngModel)]="formaDePago" [ngModelOptions]="{updateOn: 'blur'}">
+        <input matInput placeholder="Forma de pago" [(ngModel)]="formaDePago" [ngModelOptions]="{updateOn: 'blur'}" autocomplete="off">
       </mat-form-field>
 
       <mat-form-field class="pad-left pad-right">

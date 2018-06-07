@@ -39,8 +39,9 @@ import { PagosUtils } from 'app/_core/services/pagos-utils.service';
       </ng-template>
       <ng-template tdDataTableTemplate="comentario" let-value="value" let-row="row" >
         <span layout="column" class="text-md">
-          <span *ngIf="value">{{value}}</span>
+          <span *ngIf="value" [ngClass]="{'tc-pink-800':row?.comentario?.startsWith('CHEQUE DEVUELTO')}">{{value}}</span>
           <span >{{row.sucursal.nombre}}</span>
+          <span class="tc-pink-800" *ngIf="row.formaDePago=== 'CHEQUE' && !row.cheque">FALTA COBRO_CHEQUE</span>
         </span>
       </ng-template>
 
@@ -73,12 +74,13 @@ export class CobrosTableComponent implements OnInit, OnChanges {
       label: 'Cliente',
       sortable: true,
       numeric: false,
-      nested: true
+      nested: true,
+      width: 300
     },
     {
       name: 'comentario',
       label: 'Comentario',
-      width: 250
+      width: 200
     },
     {
       name: 'formaDePago',

@@ -23,15 +23,21 @@ export class IngresosComponent implements OnInit {
     },
     {
       path: 'fichas',
-      title: 'Fichas (CRE)',
-      description: 'Fichas de depósito Crédito',
+      title: 'Fichas',
+      description: 'Alta de fichas',
       icon: 'filter_none'
     },
     {
       path: 'fichasContado',
       title: 'Fichas (CON)',
-      description: 'Fichas de depósito contado',
+      description: 'Fichas de  contado',
       icon: 'my_library_books'
+    },
+    {
+      path: 'chequesDevueltos',
+      title: 'Cheques DEV',
+      description: 'Cheques devueltos',
+      icon: 'settings_backup_restore'
     }
   ];
 

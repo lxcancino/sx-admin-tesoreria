@@ -67,7 +67,7 @@ export class CobroFormComponent implements OnInit, OnChanges, OnDestroy {
     this.form = this.fb.group({
       cliente: [null, Validators.required],
       fecha: [new Date(), Validators.required],
-      tipo: ['CRE', Validators.required],
+      tipo: [null, Validators.required],
       importe: [{ value: null, disabled: false }, [Validators.required]],
       formaDePago: ['CHEQUE', Validators.required],
       comentario: null
@@ -83,7 +83,6 @@ export class CobroFormComponent implements OnInit, OnChanges, OnDestroy {
     const entity = {
       ...this.form.value,
       cliente: { id: cliente.id },
-      tipo: 'CRE',
       fecha: fecha.toISOString()
     };
     return entity;

@@ -78,9 +78,12 @@
       <button type="button" mat-button (click)="delete.emit(cobro)" *ngIf="cobro && isEditable()" color="warn">
         <mat-icon>delete</mat-icon>Eliminar
       </button>
-      <button type="button" mat-button (click)="chequeDevuelto.emit(cobro)" *ngIf="cobro?.formaDePago === 'CHEQUE'" color="warn">
-        <mat-icon>info</mat-icon>Cheque Devuelto
-      </button>
+      <ng-container *ngIf="!cobro?.comentario?.startsWith('CHEQUE DEVUELTO')">
+        <button type="button" mat-button (click)="chequeDevuelto.emit(cobro)" *ngIf="cobro?.formaDePago === 'CHEQUE' && cobro.cheque"
+          color="warn">
+          <mat-icon>info</mat-icon>Cheque Devuelto
+        </button>
+      </ng-container>
     </mat-card-actions>
   </form>
 

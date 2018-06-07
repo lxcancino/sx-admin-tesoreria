@@ -27,7 +27,8 @@ export class CobroCreateComponent implements OnInit {
   }
 
   onSave(cobro: Cobro) {
-    console.log('Salvando cobro....', cobro);
+    // console.log('Salvando cobro....', cobro);
+
     this.procesando = true;
     this.service
       .save(cobro)
