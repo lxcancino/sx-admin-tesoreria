@@ -2,17 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 
 import { Observable } from 'rxjs/Observable';
-import { catchError } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { catchError, combineLatest } from 'rxjs/operators';
 
 import { ChequesDevueltosService } from '../../services/cheques-devueltos.service';
 import { ChequeDevuelto } from '../../models/chequeDevuelto';
 import { FechaDialogComponent } from '../../../_shared/components';
+
+import * as _ from 'lodash';
 
 @Component({
   selector: 'sx-cheques-devueltos',
   template: `
     <mat-card>
       <sx-search-title title="Cheques devueltos" (search)="term = $event">
+        <mat-checkbox [checked]="pendientes$ | async" class="options" (change)="setPendientes($event)">Pendientes</mat-checkbox>
         <button mat-menu-item class="actions" (click)="runReport()">
           <mat-icon>picture_as_pdf</mat-icon> Reporte de cheques
         </button>
@@ -29,6 +33,8 @@ import { FechaDialogComponent } from '../../../_shared/components';
 export class ChequesDevueltosComponent implements OnInit {
   cheques$: Observable<ChequeDevuelto[]>;
   term;
+  pendientes = true;
+  pendientes$ = new BehaviorSubject<boolean>(true);
 
   constructor(
     private service: ChequesDevueltosService,
@@ -40,7 +46,15 @@ export class ChequesDevueltosComponent implements OnInit {
   }
 
   load() {
-    this.cheques$ = this.service.list({});
+    this.cheques$ = this.service.list({}).pipe(
+      combineLatest(this.pendientes$, (cheques, pendiente) => {
+        if (pendiente) {
+          return cheques.filter(item => !item.recepcion);
+        } else {
+          return cheques;
+        }
+      })
+    );
   }
 
   onRecepcion(event: ChequeDevuelto) {
@@ -78,5 +92,9 @@ export class ChequesDevueltosComponent implements OnInit {
         );
       }
     });
+  }
+
+  setPendientes(event) {
+    this.pendientes$.next(event.checked);
   }
 }
